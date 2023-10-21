@@ -49,7 +49,7 @@ const MenuGridItem = ({ singleProduct, handleAddProduct, handleRemoveProduct }) 
           singleProduct={singleProduct}
           selectedAttributes={selectedAttributes}
           targetAttribute={targetAttribute}
-          setTargetAttribute={setTargetAttribute}
+          // setTargetAttribute={setTargetAttribute}
         />
       </div>
     </article>

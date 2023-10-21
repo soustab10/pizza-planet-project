@@ -27,7 +27,7 @@ const Payment = ({ cartItems, totalPayment }) => {
   }
 
   useEffect(() => {
-    document.title = "Payment | Pizza Time";
+    document.title = "Payment | Pizza Planet";
   }, []);
   return (
     <React.Fragment>

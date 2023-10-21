@@ -29,7 +29,7 @@ const WelcomeSection = () => {
           transition={{ duration: 5 }}
         />
         <h2 className="txt-white">
-          Welcome to <span>Pizza Time</span> restaurant
+          Welcome to <span>Pizza Planet</span> restaurant
         </h2>
         <p>
           Founded in 1982 we bring pizza slice by slice to the next level!
@@ -48,7 +48,7 @@ const WelcomeSection = () => {
         src={img375}
         srcSet={`${img1440} 1440w, ${img700} 700w, ${img375} 375w`}
         sizes="(min-width: 1440px) 1440px, (min-width: 700px) 700px, 375px"
-        alt="Pizza Time restaurant interior with people at the tabel and the staff serving the customers"
+        alt="Pizza Planet restaurant interior with people at the tabel and the staff serving the customers"
       />
     </article>
   )

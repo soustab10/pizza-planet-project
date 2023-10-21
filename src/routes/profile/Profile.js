@@ -73,7 +73,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
     }
 
     useEffect(() => {
-        document.title = "Profile | Pizza Time";
+        document.title = "Profile | Pizza Planet";
     }, []);
     return (
         <main className="profile">

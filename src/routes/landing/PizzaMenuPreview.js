@@ -12,7 +12,7 @@ const PizzaMenuPreview = () => {
       <section className="section-4-info txt-center">
         <h2 className="pop-font txt-white">Hot Pizza Meals</h2>
         <p className="section-description">
-          Pizza Time holds the market of the pizza industry and continuously
+          Pizza Planet holds the market of the pizza industry and continuously
           offers more than pizza. Check out our hottest menu options with
           cheese, meat, chicken and veggies!
         </p>

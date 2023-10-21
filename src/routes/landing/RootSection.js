@@ -8,7 +8,7 @@ import ResetLocation from "../../helpers/ResetLocation";
 
 const RootSection = () => {
   useEffect(() => {
-    document.title = "Pizza Time";
+    document.title = "Pizza Planet";
     ResetLocation();
   }, []);
   return (

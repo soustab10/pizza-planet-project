@@ -9,11 +9,8 @@ const AddToCartButton = ({ singleProduct,
         handleAddProduct(singleProduct, selectedAttributes);
         setTargetAttribute(false);
       }}
-      className={`passive-button-style ${targetAttribute?.length > 0 || singleProduct?.attributes?.length === 0
-        ? "active-add-to-cart"
-        : "inactive-add-to-cart"
-        }`}
-      disabled={targetAttribute?.length > 0 || singleProduct?.attributes?.length === 0 ? false : true}
+      className={`passive-button-style active-add-to-cart`}
+      
     >
       Add to cart
     </button>

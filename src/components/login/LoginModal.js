@@ -7,7 +7,7 @@ import validateForm from "../validateForm";
 
 const LoginModal = ({ setLoginModalWindow, setValidLogin, loginModalWindow, hideMenu, validLogin, getUser }) => {
   const navigate = useNavigate();
-  const [formValue, setFormValue] = useState({ email: '', password: '' });
+  const [formValue, setFormValue] = useState({ username: '', password: '' });
   const [formError, setFormError] = useState({});
   const [submit, setSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ const LoginModal = ({ setLoginModalWindow, setValidLogin, loginModalWindow, hide
 
   const hideLoginModal = () => {
     setLoginModalWindow(false);
-    setFormValue({ email: '', password: '' });
+    setFormValue({ username: '', password: '' });
     setFormError({});
     setSubmit(false);
   }
@@ -53,31 +53,31 @@ const LoginModal = ({ setLoginModalWindow, setValidLogin, loginModalWindow, hide
     }
     else {
       //find all users
-      const existingUsers = await getUsers(formValue.email.toLowerCase());
-      //filter existence by email
-      const findByEmail = existingUsers.filter((u) => u.email === formValue.email.toLowerCase());
-      // if user not found by email
-      if (findByEmail.length === 0) {
+      const existingUsers = await getUsers(formValue.username.toLowerCase());
+      //filter existence by username
+      const findByusername = existingUsers.filter((u) => u.username === formValue.username.toLowerCase());
+      // if user not found by username
+      if (findByusername.length === 0) {
         setLoading(false);
         setSubmit(false);
-        setFormValue({ email: '', password: '' });
+        setFormValue({ username: '', password: '' });
         setFormError({})
-        setVerificationError("Wrong email");
+        setVerificationError("Wrong username");
         return;
       }
-      else if (findByEmail.length > 0 && findByEmail[0].password !== formValue.password) {
+      else if (findByusername.length > 0 && findByusername[0].password !== formValue.password) {
         setLoading(false);
         setSubmit(false);
-        setFormValue({ email: '', password: '' });
+        setFormValue({ username: '', password: '' });
         setFormError({});
         setVerificationError("Wrong password");
         return;
       }
-      else if (findByEmail.length > 0 && findByEmail[0].password === formValue.password) {
-        getUser(findByEmail[0].id);
+      else if (findByusername.length > 0 && findByusername[0].password === formValue.password) {
+        getUser(findByusername[0].id);
         setLoading(false);
         hideLoginModal();
-        setFormValue({ email: '', password: '' });
+        setFormValue({ username: '', password: '' });
         setFormError({});
         setVerificationError("");
         setValidLogin(true);
@@ -109,8 +109,8 @@ const LoginModal = ({ setLoginModalWindow, setValidLogin, loginModalWindow, hide
             </div> :
             <form onSubmit={handleLogin}>
               {verificationError.length === 0 ? null : <p className="login-input-err">{verificationError}</p>}
-              <input onChange={handleValidation} value={formValue.email} name="email" type="text" placeholder="Email" />
-              <span className="login-input-err">{formError.email}</span>
+              <input onChange={handleValidation} value={formValue.username} name="username" type="text" placeholder="Username" />
+              <span className="login-input-err">{formError.username}</span>
               <input onChange={handleValidation} value={formValue.password} name="password" type="password" autoComplete="true" placeholder="Password" />
               <span className="login-input-err">{formError.password}</span>
               {submit && Object.keys(formError).length === 0 && !validLogin ?

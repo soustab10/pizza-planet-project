@@ -9,7 +9,7 @@ import AboutCustomers from "./AboutCustomers";
 
 const About = () => {
   useEffect(() => {
-    document.title = "About | Pizza Time";
+    document.title = "About | Pizza Planet";
   }, []);
   return (
     <motion.main

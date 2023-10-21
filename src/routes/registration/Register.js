@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ResetLocation from "../../helpers/ResetLocation";
 const Register = ({ activateLoginModal }) => {
 
-  const [formValue, setFormValue] = useState({ id: '', email: '', password: '', repeatPassword: '', fullname: '', address: '', number: '' });
+  const [formValue, setFormValue] = useState({ id: '', email: '', password: '', repeatPassword: '', first_name: '',last_name:'',username:'', house_number: '',street_name:'',city:'',state:'',pincode:'', number: '' });
   const [formError, setFormError] = useState({})
   const [submit, setSubmit] = useState(false);
   const [registrationFail, setRegistrationFail] = useState(false);
@@ -81,13 +81,13 @@ const Register = ({ activateLoginModal }) => {
         setLoading(false);
         setSubmit(false);
         setRegistrationFail(true);
-        setFormValue({ id: '', email: '', password: '', repeatPassword: '', fullname: '', address: '', number: '' })
+        setFormValue({ id: '', email: '', password: '', repeatPassword: '', first_name: '',last_name:'',username:'', house_number: '',street_name:'',city:'',state:'',pincode:'', number: '' })
       }
       else {
         setLoading(false);
         setRegistrationFail(false);
         setSubmit(true);
-        setFormValue({ id: '', email: '', password: '', repeatPassword: '', fullname: '', address: '', number: '' })
+        setFormValue({ id: '', email: '', password: '', repeatPassword: '', first_name: '',last_name:'',username:'', house_number: '',street_name:'',city:'',state:'',pincode:'', number: '' })
       }
     }
   }
@@ -98,7 +98,7 @@ const Register = ({ activateLoginModal }) => {
   const validate = validateForm("registration");
 
   useEffect(() => {
-    document.title = "Registration | Pizza Time";
+    document.title = "Registration | Pizza Planet";
   }, []);
   return (
     <main className="register-main">
@@ -125,9 +125,19 @@ const Register = ({ activateLoginModal }) => {
         <form className="registration-form" onSubmit={handleSubmit}>
           {registrationFail ? <p className="registration-input-err">Seems like this email has already been registered!</p> : null}
           <section className="name-section">
-            <input type="text" placeholder="Full name" name="fullname" value={formValue.fullname}
+            <input type="text" placeholder="First name" name="first_name" value={formValue.first_name}
               onChange={handleValidation} />
-            <span className="registration-input-err">{formError.fullname}</span>
+            <span className="registration-input-err">{formError.first_name}</span>
+          </section>
+          <section className="name-section">
+            <input type="text" placeholder="Last name" name="last_name" value={formValue.last_name}
+              onChange={handleValidation} />
+            <span className="registration-input-err">{formError.last_name}</span>
+          </section>
+          <section className="email-section">
+            <input type="text" placeholder="Username" name="username" value={formValue.username}
+              onChange={handleValidation} />
+            <span className="registration-input-err">{formError.username}</span>
           </section>
           <section className="email-section">
             <input type="text" placeholder="Email" name="email" value={formValue.email}
@@ -143,12 +153,32 @@ const Register = ({ activateLoginModal }) => {
             <span className="registration-input-err">{formError.repeatPassword}</span>
           </section>
           <section className="birthday">
-            <input type="text" placeholder="Address (optional)" name="address" value={formValue.address}
+            <input type="text" placeholder="House No" name="house_number" value={formValue.house_number}
               onChange={handleValidation} />
-            <span className="registration-input-err">{formError.address}</span>
+            <span className="registration-input-err">{formError.house_number}</span>
           </section>
           <section className="birthday">
-            <input type="text" placeholder="Number (optional)" name="number" value={formValue.number}
+            <input type="text" placeholder="Street Name" name="street_name" value={formValue.street_name}
+              onChange={handleValidation} />
+            <span className="registration-input-err">{formError.street_name}</span>
+          </section>
+          <section className="birthday">
+            <input type="text" placeholder="City" name="city" value={formValue.city}
+              onChange={handleValidation} />
+            <span className="registration-input-err">{formError.city}</span>
+          </section>
+          <section className="birthday">
+            <input type="text" placeholder="State" name="state" value={formValue.state}
+              onChange={handleValidation} />
+            <span className="registration-input-err">{formError.state}</span>
+          </section>
+          <section className="birthday">
+            <input type="text" placeholder="Pincode" name="pincode" value={formValue.pincode}
+              onChange={handleValidation} />
+            <span className="registration-input-err">{formError.pincode}</span>
+          </section>
+          <section className="birthday">
+            <input type="text" placeholder="Phone Number" name="number" value={formValue.number}
               onChange={handleValidation} />
             <span className="registration-input-err">{formError.number}</span>
           </section>

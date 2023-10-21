@@ -124,7 +124,7 @@ function App() {
     e.preventDefault();
     const inputValue = e.target.value.toLowerCase();
     const collectData = allProductsData.filter(product =>
-      product.ItemName.toLowerCase().includes(inputValue)
+      product.pizza_name.toLowerCase().includes(inputValue)
     );
 
     if (collectData.length > 0) {
