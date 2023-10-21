@@ -12,20 +12,13 @@ const CartItem = ({
       {cartItems.map((cartItem, index) => {
         return (
           <section className="cart-item" key={index}>
-            <img src={cartItem.ItemImg} alt={cartItem.ItemName} />
+            <img src={cartItem.pizza_image_url} alt={cartItem.pizza_name} />
             <section className="cart-item-content">
               <section className="cart-item-info">
-                {cartItem.userSelectedAttributes.length === 0 ? (
-                  <h3 className="cart-item-title">{cartItem.ItemName}</h3>
-                ) : (
-                  <h3 className="cart-item-title">
-                    {cartItem.ItemName},{" "}
-                    {cartItem.userSelectedAttributes.map((i, index) => {
-                      return <span key={index}>{i.attributeValue}</span>;
-                    })}
-                  </h3>
-                )}
-                <p className="cart-item-ingredients">{cartItem.ItemIngredients}</p>
+                
+                  <h3 className="cart-item-title">{cartItem.pizza_name}</h3>
+                 
+                <p className="cart-item-ingredients">{cartItem.description}</p>
               </section>
 
               <section className="cart-item-interaction">
@@ -35,7 +28,7 @@ const CartItem = ({
                   cartItem={cartItem}
                 />
 
-                <p className="cart-item-price">${cartItem.ItemPrice}</p>
+                <p className="cart-item-price">${cartItem.price}</p>
               </section>
             </section>
           </section>
