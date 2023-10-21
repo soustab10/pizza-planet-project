@@ -6,7 +6,7 @@ export const allProductsData = [
       "description": "A classic pepperoni pizza for meat lovers.",
       "price": 14.99,
       "pizza_image_url": "https://source.unsplash.com/JspLKUauwSI"
-    },
+    }, 
     {
       "pizza_id": 12,
       "pizza_name": "Meat Feast",

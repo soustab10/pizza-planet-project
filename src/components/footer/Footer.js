@@ -6,6 +6,8 @@ export default class Footer extends React.Component {
   render() {
     return (
       <footer className=" flex-container flex-column txt-center txt-white pop-font">
+        Pizza Planet &copy; 2023
+        <hr />
         <FooterMenu />
         <hr />
         <FooterLegal />
