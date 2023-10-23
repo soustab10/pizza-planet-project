@@ -3,6 +3,7 @@ import "./loginModal.css";
 import LinkButton from "../Button";
 import { useNavigate } from "react-router-dom";
 import validateForm from "../validateForm";
+import api from "../../api";
 
 
 const LoginModal = ({ setLoginModalWindow, setValidLogin, loginModalWindow, hideMenu, validLogin, getUser }) => {
@@ -13,18 +14,6 @@ const LoginModal = ({ setLoginModalWindow, setValidLogin, loginModalWindow, hide
   const [loading, setLoading] = useState(false);
   const [verificationError, setVerificationError] = useState('');
   const validate = validateForm("login");
-
-  const getUsers = async () => {
-    try {
-      const response = await fetch(process.env.REACT_APP_USERS_URL);
-      const body = await response.json();
-      return body.data;
-    }
-    catch (err) {
-      console.log(err.message)
-    }
-  }
-
 
   const handleValidation = (e) => {
 
@@ -45,45 +34,20 @@ const LoginModal = ({ setLoginModalWindow, setValidLogin, loginModalWindow, hide
   const handleLogin = async (e) => {
     setVerificationError('');
     e.preventDefault();
-    setLoading(true);
     setFormError(validate(formValue));
-    if (Object.keys(validate(formValue)).length > 0) {
-      setLoading(false);
-      return;
-    }
-    else {
-      //find all users
-      const existingUsers = await getUsers(formValue.username.toLowerCase());
-      //filter existence by username
-      const findByusername = existingUsers.filter((u) => u.username === formValue.username.toLowerCase());
-      // if user not found by username
-      if (findByusername.length === 0) {
-        setLoading(false);
-        setSubmit(false);
-        setFormValue({ username: '', password: '' });
-        setFormError({})
-        setVerificationError("Wrong username");
-        return;
-      }
-      else if (findByusername.length > 0 && findByusername[0].password !== formValue.password) {
-        setLoading(false);
-        setSubmit(false);
-        setFormValue({ username: '', password: '' });
-        setFormError({});
-        setVerificationError("Wrong password");
-        return;
-      }
-      else if (findByusername.length > 0 && findByusername[0].password === formValue.password) {
-        getUser(findByusername[0].id);
-        setLoading(false);
-        hideLoginModal();
-        setFormValue({ username: '', password: '' });
-        setFormError({});
-        setVerificationError("");
-        setValidLogin(true);
-        navigate('/menu');
-      }
-    }
+    const bodySend=JSON.stringify({...formValue});
+    // console.log(bodySend);
+    fetch("http://localhost:8080/auth/login",{
+      method:'POST',
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:bodySend
+    }).then((resp)=>{resp.json().then((res)=>{
+      console.warn(res);
+      const token=res.token;
+      localStorage.setItem('token',token);
+    })});
   };
 
 
