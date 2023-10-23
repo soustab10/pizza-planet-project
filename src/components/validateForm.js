@@ -26,9 +26,6 @@ const validateForm = (form) => (value) => {
         if (!value.password) {
             errors.password = "Please enter a valid password"
         }
-        else if (value.password.length < 8 || value.repeatPassword.length < 8) {
-            errors.password = "Password should be min. 8 characters"
-        }
         if (!value.repeatPassword) {
             errors.repeatPassword = "Please repeat the password"
         }
@@ -65,9 +62,6 @@ const validateForm = (form) => (value) => {
 
         if (!value.password) {
             errors.password = 'Please enter a valid password';
-        }
-        else if (value.password.length < 8) {
-            errors.password = 'Password should be min. 8 characters';
         }
     }
     else if (form === "contact") {
