@@ -10,6 +10,17 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   const [selectedSize, setSelectedSize] = useState("Medium");
   const [selectedCrust, setSelectedCrust] = useState("Regular");
   const [selectedToppings, setSelectedToppings] = useState([]);
+  const [quantity, setQuantity] = useState(1);
+
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
 
   const handleSizeChange = (event) => {
     setSelectedSize(event.target.value);
@@ -43,6 +54,49 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
     }
     console.log(selectedPizza);
   }, singleProduct.pizza_name);
+
+  const addToCart = async (e) => {
+    e.preventDefault();
+    const dataSend = {
+      token: sessionStorage.getItem("token"),
+      pizza: {
+        pizza_id: window.location.pathname.toString().substring(6),
+      },
+      quantity: quantity,
+      pizzaCrust: {
+        crust_id: selectedCrust,
+      },
+      pizzaSize: {
+        size_id: selectedSize,
+      },
+      base_price: singleProduct.price,
+      toppings: selectedToppings,
+    };
+    const bodySend = JSON.stringify(dataSend);
+    fetch("http://localhost:8080/cart/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body:bodySend,
+    })
+      .then((response) => {
+        console.log(response.status);
+        
+        if (!response.ok) {
+          throw new Error("Username and password do not match.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        
+        
+       console.log(data);
+      })
+      .catch((error) => {
+        // setFormError(error.message);
+      });
+  };
 
   return (
     <main className="single-item-container">
@@ -124,6 +178,20 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
               </div>
             </label>
           </section>
+          <section>
+            <div className="quantity-counter">
+              <h2 className="counter-heading">Quantity Counter</h2>
+              <div className="quantity-control">
+                <button className="counter-btn" onClick={decreaseQuantity}>
+                  -
+                </button>
+                <span className="counter-count">{quantity}</span>
+                <button className="counter-btn" onClick={increaseQuantity}>
+                  +
+                </button>
+              </div>
+            </div>
+          </section>
 
           <section className="price">
             <p className="price-num">
@@ -131,14 +199,12 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
               {singleProduct.price}
             </p>
 
-            <AddToCartButton
-              handleAddProduct={handleAddProduct}
-              handleRemoveProduct={handleRemoveProduct}
-              singleProduct={singleProduct}
-              selectedAttributes={selectedAttributes}
-              targetAttribute={targetAttribute}
-              setTargetAttribute={setTargetAttribute}
-            />
+            <button
+              onClick={addToCart}
+              className={`passive-button-style active-add-to-cart`}
+            >
+              Asli Add to Cart
+            </button>
           </section>
 
           <div>
