@@ -37,6 +37,7 @@ const Register = ({ activateLoginModal }) => {
 
   const handleSubmit = async (e) => {
     console.log(formValue);
+    console.log(1);
     const dob = new Date(formValue.dob);
     const currentDate = new Date();
     const ageInMilliseconds = currentDate - dob;
@@ -62,12 +63,13 @@ const Register = ({ activateLoginModal }) => {
       pincode: formValue.pincode,
     };
     setLoading(true);
+    console.log(1);
     e.preventDefault();
     setFormError(validate(formValue));
     window.scrollTo(0, 0);
     let currForm = { ...formValue };
     currForm.email = currForm.email.toLowerCase();
-
+    console.log(1);
     setVerificationError("");
     const bodySend = JSON.stringify({ ...signupData });
     console.log(bodySend);
@@ -79,6 +81,7 @@ const Register = ({ activateLoginModal }) => {
       body: bodySend,
     }).then((resp) => {
       resp.json().then((res) => {
+        console.log(1);
         console.warn(res + "Click on Login to Login with Username and Password!");
         // const token = res.token;
         // localStorage.setItem("token", token);

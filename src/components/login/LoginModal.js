@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+// import { Navigate } from "react-router-dom";
+import axios from "axios";
 import "./loginModal.css";
 import LinkButton from "../Button";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +17,7 @@ const LoginModal = ({
 }) => {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState({ username: "", password: "" });
-  const [formError, setFormError] = useState({});
+  const [formError, setFormError] = useState("");
   const [submit, setSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [verificationError, setVerificationError] = useState("");
@@ -32,30 +34,70 @@ const LoginModal = ({
   const hideLoginModal = () => {
     setLoginModalWindow(false);
     setFormValue({ username: "", password: "" });
-    setFormError({});
+    setFormError("");
     setSubmit(false);
   };
 
   const handleLogin = async (e) => {
-    setVerificationError("");
     e.preventDefault();
-    setFormError(validate(formValue));
+    setVerificationError("");
+    
     const bodySend = JSON.stringify({ ...formValue });
-    // console.log(bodySend);
     fetch("http://localhost:8080/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: bodySend,
-    }).then((resp) => {
-      resp.json().then((res) => {
-        console.warn(res);
-        const token = res.token;
-        localStorage.setItem("token", token);
+      body:bodySend,
+    })
+      .then((response) => {
+        console.log(response.status);
+        if (response.status === 403) {
+          setFormError( "Username and password do not match.")
+        }
+        if (!response.ok) {
+          throw new Error("Username and password do not match.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(2);
+        const token = data.token;
+        if(token.length === 0){
+          throw new Error("Username and password do not match.");
+        }
+        // Store the token in localStorage
+        sessionStorage.setItem("token", token);
+        setValidLogin(true);
+        // Redirect to the home page
+        window.location.href = "/";
+      })
+      .catch((error) => {
+        // setFormError(error.message);
       });
-    });
   };
+
+  // const handleLogin = async (e) => {
+  //   setVerificationError("");
+  //   e.preventDefault();
+  //   setFormError(validate(formValue));
+  //   const bodySend = JSON.stringify({ ...formValue });
+  //   // console.log(bodySend);
+  //   fetch("http://localhost:8080/auth/login", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: bodySend,
+  //   }).then((resp) => {
+  //     resp.json().then((res) => {
+  //       console.warn(res);
+  //       const token = res.token;
+  //       localStorage.setItem("token", token);
+  //       return <Navigate to="/" />;
+  //     });
+  //   });
+  // };
 
   return (
     <article className={`modal ${loginModalWindow ? "active-modal" : null}`}>
@@ -91,7 +133,7 @@ const LoginModal = ({
                 type="text"
                 placeholder="Username"
               />
-              <span className="login-input-err">{formError.username}</span>
+              
               <input
                 onChange={handleValidation}
                 value={formValue.password}
@@ -100,12 +142,8 @@ const LoginModal = ({
                 autoComplete="true"
                 placeholder="Password"
               />
-              <span className="login-input-err">{formError.password}</span>
-              {submit && Object.keys(formError).length === 0 && !validLogin ? (
-                <p className="login-input-err">
-                  We couldn't find an account. Try another credentials
-                </p>
-              ) : null}
+              <span className="login-input-err">{formError}</span>
+
               <section className="login-and-signup">
                 <button type="submit" className="modal-login-btn">
                   Log in
