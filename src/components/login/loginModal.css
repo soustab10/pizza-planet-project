@@ -130,7 +130,8 @@
 }
 
 .login-and-signup .modal-signup-btn,
-.login-and-signup .modal-login-btn {
+.login-and-signup .modal-login-btn,
+.login-and-signup .modal-signup-btn2{
   cursor: pointer;
   font-size: 1rem;
   border: 1px solid transparent;
@@ -145,7 +146,13 @@
 }
 
 .login-and-signup .modal-signup-btn {
-  background-color: var(--yellow);
+  color: #fff;
+  background-color: darkgreen;
+  text-align: center;
+}
+.login-and-signup .modal-signup-btn2 {
+  color: #fff;
+  background-color: var(--pizza-red);
   text-align: center;
 }
 

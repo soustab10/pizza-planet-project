@@ -4,14 +4,14 @@ import Header from './routes/landing/Header.js';
 import Footer from './components/footer/Footer';
 import {
   About,
-
   Cart,
   Checkout,
-
   RootSection,
   Menu,
   Payment,
   Register,
+  RegisterPartner,
+  RegisterKitchen,
   SingleItem,
 } from './routes/index';
 import { allProductsData } from './data/AllProductsData.js';
@@ -479,6 +479,8 @@ function App() {
         
         <Route path="/about" element={<About />} />
         <Route path="/register" element={validLogin ? <NotFound /> : <Register activateLoginModal={activateLoginModal} />} />
+        <Route path="/registerkitchen" element={validLogin ? <NotFound /> : <RegisterKitchen activateLoginModal={activateLoginModal} />} />
+        <Route path="/registerpartner" element={validLogin ? <NotFound /> : <RegisterPartner activateLoginModal={activateLoginModal} />} />
         <Route path="/profile" element={!validLogin ? <NotFound /> : <Profile currentUser={currentUser} getUser={getUser} handleLogout={handleLogout} updateUser={updateUser} />} />
         <Route
           path="/checkout"

@@ -6,6 +6,8 @@ import RootSection from "./landing/RootSection";
 import Menu from "./menu/Menu";
 import Payment from "./payment/Payment";
 import Register from './registration/Register';
+import RegisterPartner from './registerpartner/RegisterPartner';
+import RegisterKitchen from './registerkitchen/RegisterKitchen';
 import SingleItem from './single-item/SingleItem';
 
-export { About, Cart, Checkout, RootSection, Menu, Payment, Register, SingleItem };
+export { About, Cart, Checkout, RootSection, Menu, Payment, Register, RegisterPartner,RegisterKitchen, SingleItem };

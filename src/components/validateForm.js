@@ -2,6 +2,8 @@ const validateForm = (form) => (value) => {
     let errors = {};
     const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
     const numberRegex = /\d/;
+    const vehicleRegex  = /^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/;
+    const pinRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
     if (form === "newsletter") {
         if (!value.email) {
             errors.email = "Please enter an email"
@@ -22,6 +24,12 @@ const validateForm = (form) => (value) => {
         }
         else if (!emailRegex.test(value.email)) {
             errors.email = "Please enter valid email"
+        }
+        else if (!vehicleRegex.test(value.vehicle_number)) {
+            errors.vehicle = "Please enter valid Vehicle Number"
+        }
+        else if(!pinRegex.test(value.pincode)){
+            errors.pincode = "Please enter valid Pincode"
         }
         if (!value.password) {
             errors.password = "Please enter a valid password"

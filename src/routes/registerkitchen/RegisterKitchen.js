@@ -13,7 +13,6 @@ const Register = ({ activateLoginModal }) => {
     username: "",
     house_number: "",
     street_name: "",
-    dob: "",
     city: "",
     state: "",
     pincode: "",
@@ -25,35 +24,22 @@ const Register = ({ activateLoginModal }) => {
   const [loading, setLoading] = useState(false);
   const [verificationError, setVerificationError] = useState("");
 
-  const getUsers = async () => {
-    try {
-      const response = await fetch(process.env.REACT_APP_USERS_URL);
-      const body = await response.json();
-      return body.data;
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
+  
   const handleSubmit = async (e) => {
     console.log(formValue);
-    const dob = new Date(formValue.dob);
+
     const currentDate = new Date();
-    const ageInMilliseconds = currentDate - dob;
-    const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
-    const roundedAge = Math.floor(ageInYears);
+
     const formattedDate = currentDate
       .toISOString()
       .replace(/\.(\d+)Z$/, ".$10000+0000");
     const signupData = {
-      username: formValue.username,
+      kitchen_name: formValue.username,
       password: formValue.password,
       first_name: formValue.first_name,
       last_name: formValue.last_name,
       email: [{ email: formValue.email }],
       phone_no: [{ phone_number: formValue.number }],
-      dob: formValue.dob,
-      age: roundedAge,
       date_of_reg: formattedDate,
       house_number: formValue.house_number,
       street_name: formValue.street_name,
@@ -79,7 +65,9 @@ const Register = ({ activateLoginModal }) => {
       body: bodySend,
     }).then((resp) => {
       resp.json().then((res) => {
-        console.warn(res + "Click on Login to Login with Username and Password!");
+        console.warn(
+          res + "Click on Login to Login with Username and Password!"
+        );
         // const token = res.token;
         // localStorage.setItem("token", token);
       });
@@ -100,47 +88,46 @@ const Register = ({ activateLoginModal }) => {
       }
     }
 
-      // const accCreation = await createUser(currForm);
-      // if (accCreation === false) {
-      //   setLoading(false);
-      //   setSubmit(false);
-      //   setRegistrationFail(true);
-      //   setFormValue({
-      //     id: "",
-      //     email: "",
-      //     password: "",
-      //     repeatPassword: "",
-      //     first_name: "",
-      //     last_name: "",
-      //     username: "",
-      //     house_number: "",
-      //     street_name: "",
-      //     city: "",
-      //     state: "",
-      //     pincode: "",
-      //     number: "",
-      //   });
-      // } else {
-      //   setLoading(false);
-      //   setRegistrationFail(false);
-      //   setSubmit(true);
-      //   setFormValue({
-      //     id: "",
-      //     email: "",
-      //     password: "",
-      //     repeatPassword: "",
-      //     first_name: "",
-      //     last_name: "",
-      //     username: "",
-      //     house_number: "",
-      //     street_name: "",
-      //     city: "",
-      //     state: "",
-      //     pincode: "",
-      //     number: "",
-      //   });
-      // }
-    
+    // const accCreation = await createUser(currForm);
+    // if (accCreation === false) {
+    //   setLoading(false);
+    //   setSubmit(false);
+    //   setRegistrationFail(true);
+    //   setFormValue({
+    //     id: "",
+    //     email: "",
+    //     password: "",
+    //     repeatPassword: "",
+    //     first_name: "",
+    //     last_name: "",
+    //     username: "",
+    //     house_number: "",
+    //     street_name: "",
+    //     city: "",
+    //     state: "",
+    //     pincode: "",
+    //     number: "",
+    //   });
+    // } else {
+    //   setLoading(false);
+    //   setRegistrationFail(false);
+    //   setSubmit(true);
+    //   setFormValue({
+    //     id: "",
+    //     email: "",
+    //     password: "",
+    //     repeatPassword: "",
+    //     first_name: "",
+    //     last_name: "",
+    //     username: "",
+    //     house_number: "",
+    //     street_name: "",
+    //     city: "",
+    //     state: "",
+    //     pincode: "",
+    //     number: "",
+    //   });
+    // }
   };
   const handleValidation = (e) => {
     const { name, value } = e.target;
@@ -156,7 +143,7 @@ const Register = ({ activateLoginModal }) => {
       <h2>
         {submit && Object.keys(formError).length === 0
           ? "Success!"
-          : "Registration"}
+          : " Kitchen Registration"}
       </h2>
       {loading ? (
         <div role="status" className="loader">
@@ -192,7 +179,7 @@ const Register = ({ activateLoginModal }) => {
           <section className="name-section">
             <input
               type="text"
-              placeholder="First name"
+              placeholder="First name of Business Owner"
               name="first_name"
               value={formValue.first_name}
               onChange={handleValidation}
@@ -204,7 +191,7 @@ const Register = ({ activateLoginModal }) => {
           <section className="name-section">
             <input
               type="text"
-              placeholder="Last name"
+              placeholder="Last name of Business Owner"
               name="last_name"
               value={formValue.last_name}
               onChange={handleValidation}
@@ -216,7 +203,7 @@ const Register = ({ activateLoginModal }) => {
           <section className="email-section">
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Kitchen Name"
               name="username"
               value={formValue.username}
               onChange={handleValidation}
@@ -233,22 +220,20 @@ const Register = ({ activateLoginModal }) => {
             />
             <span className="registration-input-err">{formError.email}</span>
           </section>
-          <section className="email-section">
-          
+          <section className="birthday">
             <input
-              type="date"
-              placeholder="Date of Birth"
-              name="dob"
-              style={{ color: "#bfbfbf" }}
-            
-              value={formValue.dob}
+              type="text"
+              placeholder="Phone Number"
+              name="number"
+              value={formValue.number}
               onChange={handleValidation}
             />
+            <span className="registration-input-err">{formError.number}</span>
           </section>
           <section className="password-section">
             <input
               type="password"
-              placeholder="New password"
+              placeholder="Password"
               name="password"
               value={formValue.password}
               onChange={handleValidation}
@@ -265,6 +250,10 @@ const Register = ({ activateLoginModal }) => {
               {formError.repeatPassword}
             </span>
           </section>
+          <p style={{ color: "white", padding: "10px" }}>
+            {" "}
+            Enter Address of Kitchen:{" "}
+          </p>
           <section className="birthday">
             <input
               type="text"
@@ -319,16 +308,7 @@ const Register = ({ activateLoginModal }) => {
             />
             <span className="registration-input-err">{formError.pincode}</span>
           </section>
-          <section className="birthday">
-            <input
-              type="text"
-              placeholder="Phone Number"
-              name="number"
-              value={formValue.number}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">{formError.number}</span>
-          </section>
+
           <p className="terms-warning">
             By clicking Sign Up, you agree to our Terms, Data Policy and Cookies
             Policy. You may receive an email notification from us and can opt

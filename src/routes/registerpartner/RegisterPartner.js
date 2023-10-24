@@ -11,12 +11,9 @@ const Register = ({ activateLoginModal }) => {
     first_name: "",
     last_name: "",
     username: "",
-    house_number: "",
-    street_name: "",
-    dob: "",
+    vehicle_number: "",
     city: "",
-    state: "",
-    pincode: "",
+    status: "",
     number: "",
   });
   const [formError, setFormError] = useState({});
@@ -25,15 +22,6 @@ const Register = ({ activateLoginModal }) => {
   const [loading, setLoading] = useState(false);
   const [verificationError, setVerificationError] = useState("");
 
-  const getUsers = async () => {
-    try {
-      const response = await fetch(process.env.REACT_APP_USERS_URL);
-      const body = await response.json();
-      return body.data;
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
 
   const handleSubmit = async (e) => {
     console.log(formValue);
@@ -52,14 +40,9 @@ const Register = ({ activateLoginModal }) => {
       last_name: formValue.last_name,
       email: [{ email: formValue.email }],
       phone_no: [{ phone_number: formValue.number }],
-      dob: formValue.dob,
-      age: roundedAge,
-      date_of_reg: formattedDate,
-      house_number: formValue.house_number,
-      street_name: formValue.street_name,
+      status: "active",
+      vehicle_number: formValue.vehicle_number,
       city: formValue.city,
-      state: formValue.state,
-      pincode: formValue.pincode,
     };
     setLoading(true);
     e.preventDefault();
@@ -79,7 +62,9 @@ const Register = ({ activateLoginModal }) => {
       body: bodySend,
     }).then((resp) => {
       resp.json().then((res) => {
-        console.warn(res + "Click on Login to Login with Username and Password!");
+        console.warn(
+          res + "Click on Login to Login with Username and Password!"
+        );
         // const token = res.token;
         // localStorage.setItem("token", token);
       });
@@ -100,47 +85,46 @@ const Register = ({ activateLoginModal }) => {
       }
     }
 
-      // const accCreation = await createUser(currForm);
-      // if (accCreation === false) {
-      //   setLoading(false);
-      //   setSubmit(false);
-      //   setRegistrationFail(true);
-      //   setFormValue({
-      //     id: "",
-      //     email: "",
-      //     password: "",
-      //     repeatPassword: "",
-      //     first_name: "",
-      //     last_name: "",
-      //     username: "",
-      //     house_number: "",
-      //     street_name: "",
-      //     city: "",
-      //     state: "",
-      //     pincode: "",
-      //     number: "",
-      //   });
-      // } else {
-      //   setLoading(false);
-      //   setRegistrationFail(false);
-      //   setSubmit(true);
-      //   setFormValue({
-      //     id: "",
-      //     email: "",
-      //     password: "",
-      //     repeatPassword: "",
-      //     first_name: "",
-      //     last_name: "",
-      //     username: "",
-      //     house_number: "",
-      //     street_name: "",
-      //     city: "",
-      //     state: "",
-      //     pincode: "",
-      //     number: "",
-      //   });
-      // }
-    
+    // const accCreation = await createUser(currForm);
+    // if (accCreation === false) {
+    //   setLoading(false);
+    //   setSubmit(false);
+    //   setRegistrationFail(true);
+    //   setFormValue({
+    //     id: "",
+    //     email: "",
+    //     password: "",
+    //     repeatPassword: "",
+    //     first_name: "",
+    //     last_name: "",
+    //     username: "",
+    //     house_number: "",
+    //     street_name: "",
+    //     city: "",
+    //     state: "",
+    //     pincode: "",
+    //     number: "",
+    //   });
+    // } else {
+    //   setLoading(false);
+    //   setRegistrationFail(false);
+    //   setSubmit(true);
+    //   setFormValue({
+    //     id: "",
+    //     email: "",
+    //     password: "",
+    //     repeatPassword: "",
+    //     first_name: "",
+    //     last_name: "",
+    //     username: "",
+    //     house_number: "",
+    //     street_name: "",
+    //     city: "",
+    //     state: "",
+    //     pincode: "",
+    //     number: "",
+    //   });
+    // }
   };
   const handleValidation = (e) => {
     const { name, value } = e.target;
@@ -156,7 +140,7 @@ const Register = ({ activateLoginModal }) => {
       <h2>
         {submit && Object.keys(formError).length === 0
           ? "Success!"
-          : "Registration"}
+          : "Delivery Partner Registration"}
       </h2>
       {loading ? (
         <div role="status" className="loader">
@@ -233,18 +217,6 @@ const Register = ({ activateLoginModal }) => {
             />
             <span className="registration-input-err">{formError.email}</span>
           </section>
-          <section className="email-section">
-          
-            <input
-              type="date"
-              placeholder="Date of Birth"
-              name="dob"
-              style={{ color: "#bfbfbf" }}
-            
-              value={formValue.dob}
-              onChange={handleValidation}
-            />
-          </section>
           <section className="password-section">
             <input
               type="password"
@@ -265,30 +237,7 @@ const Register = ({ activateLoginModal }) => {
               {formError.repeatPassword}
             </span>
           </section>
-          <section className="birthday">
-            <input
-              type="text"
-              placeholder="House No"
-              name="house_number"
-              value={formValue.house_number}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">
-              {formError.house_number}
-            </span>
-          </section>
-          <section className="birthday">
-            <input
-              type="text"
-              placeholder="Street Name"
-              name="street_name"
-              value={formValue.street_name}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">
-              {formError.street_name}
-            </span>
-          </section>
+
           <section className="birthday">
             <input
               type="text"
@@ -302,23 +251,14 @@ const Register = ({ activateLoginModal }) => {
           <section className="birthday">
             <input
               type="text"
-              placeholder="State"
-              name="state"
-              value={formValue.state}
+              placeholder="Vehicle Number"
+              name="vehicle_number"
+              value={formValue.vehicle_number}
               onChange={handleValidation}
             />
-            <span className="registration-input-err">{formError.state}</span>
+            <span className="registration-input-err">{formError.vehicle}</span>
           </section>
-          <section className="birthday">
-            <input
-              type="text"
-              placeholder="Pincode"
-              name="pincode"
-              value={formValue.pincode}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">{formError.pincode}</span>
-          </section>
+
           <section className="birthday">
             <input
               type="text"
