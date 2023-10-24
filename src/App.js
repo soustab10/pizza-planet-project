@@ -233,7 +233,7 @@ function App() {
       let index;
       //if there are no attributes find index by id
       if (userSelectedAttributes.length === 0) {
-        index = cartItems.findIndex(item => item.id === targetProduct.id);
+        index = cartItems.findIndex(item => (item.id).toString() === (targetProduct.id).toString());
       }
 
       //if there are attributes find index by attributes and id at the same time

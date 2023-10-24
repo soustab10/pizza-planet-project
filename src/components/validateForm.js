@@ -103,7 +103,7 @@ const validateForm = (form) => (value) => {
         if (!value.month || value.month > 12 || value.month < 1) {
             errors.year = "Please enter valid month"
         }
-        if (!value.year || value.year > 28 || value.year < 17) {
+        if (!value.year || value.year > 50 || value.year < 23) {
             errors.year = "Please enter valid year"
         }
     }
