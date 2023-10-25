@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import AddToCartButton from "../cart/AddToCartButton";
 import { Link } from "react-router-dom";
 
 function Modal({ closeModal }) {
@@ -185,11 +184,16 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
       setSelectedToppings([...selectedToppings, topping]);
     }
   };
-
   const addToCart = async (e) => {
+    console.log("add to cart");
     e.preventDefault();
-    const dataSend = {
-      token: sessionStorage.getItem("token"),
+    var myHeaders = new Headers();
+    const userToken = sessionStorage.getItem("token");
+    console.log(userToken);
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
+
+    var dataSend = JSON.stringify({
       pizza: {
         pizza_id: window.location.pathname.toString().substring(6),
       },
@@ -201,21 +205,19 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
         size_id: selectedSize,
       },
       toppings: selectedToppings,
-    };
-    const bodySend = JSON.stringify(dataSend);
-    console.log(bodySend);
+    });
 
-    fetch("http://localhost:8080/cart/add", {
+    var requestOptions = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: bodySend,
-    })
+      headers: myHeaders,
+      body: dataSend,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8080/cart/add", requestOptions)
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          openModal();
           window.alert("Please login to add to cart");
         }
         if (!response.ok) {
@@ -225,11 +227,23 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
       })
       .then((data) => {
         console.log(data);
-      })
-      .catch((error) => {
-        // setFormError(error.message);
       });
   };
+
+  //   const dataSend = {
+  //     token: sessionStorage.getItem("token"),
+  //     pizza: {
+  //       pizza_id: window.location.pathname.toString().substring(6),
+  //     },
+  //     quantity: quantity,
+  //     pizzaCrust: {
+  //       crust_id: selectedCrust,
+  //     },
+  //     pizzaSize: {
+  //       size_id: selectedSize,
+  //     },
+  //     toppings: selectedToppings,
+  //   };
 
   return (
     <main className="single-item-container">
@@ -320,9 +334,7 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
               <span>Rs. </span>
               {totalPrice}
             </p>
-            <p className="price-num">
-              Net Total: Rs {totalPrice * quantity}
-            </p>
+            <p className="price-num">Net Total: Rs {totalPrice * quantity}</p>
 
             <button
               onClick={addToCart}

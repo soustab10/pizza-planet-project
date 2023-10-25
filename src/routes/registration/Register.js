@@ -73,20 +73,6 @@ const Register = ({ activateLoginModal }) => {
     setVerificationError("");
     const bodySend = JSON.stringify({ ...signupData });
     console.log(bodySend);
-    fetch("http://localhost:8080/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: bodySend,
-    }).then((resp) => {
-      resp.json().then((res) => {
-        console.log(1);
-        console.warn(res + "Click on Login to Login with Username and Password!");
-        // const token = res.token;
-        // localStorage.setItem("token", token);
-      });
-    });
     if (Object.keys(validate(formValue)).length > 0) {
       setLoading(false);
       return;
@@ -102,6 +88,22 @@ const Register = ({ activateLoginModal }) => {
         delete currForm.number;
       }
     }
+
+
+    fetch("http://localhost:8080/customer/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: bodySend,
+    }).then((resp) => {
+      resp.json().then((res) => {
+        console.log(1);
+        window.alert("User created successfully. Login with your credentials to continue.");
+        
+      });
+    });
+    
 
       // const accCreation = await createUser(currForm);
       // if (accCreation === false) {

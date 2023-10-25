@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import AddToCartButton from "../cart/AddToCartButton";
 
 import ResetLocation from "../../helpers/ResetLocation";
 
@@ -33,23 +32,29 @@ const MenuGridItem = ({
     });
   };
 
-
-  const [selectedCrust, setSelectedCrust] = useState(allCrustData[0].crust_id); 
-  const [selectedSize, setSelectedSize] = useState(allSizesData[0].size_id);// Set the default selected crust
+  const [selectedCrust, setSelectedCrust] = useState(allCrustData[0].crust_id);
+  const [selectedSize, setSelectedSize] = useState(allSizesData[0].size_id); // Set the default selected crust
 
   const handleCrustChange = (event) => {
     const selectedCrustId = parseInt(event.target.value, 10);
-    const newSelectedCrust = allCrustData.find((crust) => crust.crust_id === selectedCrustId);
+    const newSelectedCrust = allCrustData.find(
+      (crust) => crust.crust_id === selectedCrustId
+    );
     setSelectedCrust(newSelectedCrust);
-   
   };
 
   const addToCart = async (e) => {
+    console.log("add to cart");
     e.preventDefault();
-    const dataSend = {
-      token: sessionStorage.getItem("token"),
+    var myHeaders = new Headers();
+    const userToken = sessionStorage.getItem("token");
+    console.log(userToken);
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
+
+    var dataSend = JSON.stringify({
       pizza: {
-        pizza_id: window.location.pathname.toString().substring(6),
+        pizza_id: singleProduct.pizza_id,
       },
       quantity: 1,
       pizzaCrust: {
@@ -59,21 +64,19 @@ const MenuGridItem = ({
         size_id: selectedSize,
       },
       toppings: [],
-    };
-    const bodySend = JSON.stringify(dataSend);
-    console.log(bodySend);
+    });
 
-    fetch("http://localhost:8080/cart/add", {
+    var requestOptions = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: bodySend,
-    })
+      headers: myHeaders,
+      body: dataSend,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8080/cart/add", requestOptions)
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          
           window.alert("Please login to add to cart");
         }
         if (!response.ok) {
@@ -83,19 +86,56 @@ const MenuGridItem = ({
       })
       .then((data) => {
         console.log(data);
-      })
-      .catch((error) => {
-        // setFormError(error.message);
       });
-  };
 
+    // const dataSend = {
+    //   token: sessionStorage.getItem("token"),
+    //   pizza: {
+    //     pizza_id: window.location.pathname.toString().substring(6),
+    //   },
+    //   quantity: 1,
+    //   pizzaCrust: {
+    //     crust_id: selectedCrust,
+    //   },
+    //   pizzaSize: {
+    //     size_id: selectedSize,
+    //   },
+    //   toppings: [],
+    // };
+    // const bodySend = JSON.stringify(dataSend);
+    // console.log(bodySend);
+
+    // fetch("http://localhost:8080/cart/add", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: bodySend,
+    // })
+    //   .then((response) => {
+    //     console.log(response.status);
+    //     if (response.status === 403) {
+
+    //       window.alert("Please login to add to cart");
+    //     }
+    //     if (!response.ok) {
+    //       throw new Error("Username and password do not match.");
+    //     }
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //   })
+    //   .catch((error) => {
+    //     // setFormError(error.message);
+    //   });
+  };
 
   return (
     <article className="menu-grid-item flex-container flex-row txt-white">
       <Link
         onClick={ResetLocation}
         to={`/menu/${singleProduct.pizza_id}`}
-        
         className="menu-item-link"
       >
         <img
@@ -105,8 +145,7 @@ const MenuGridItem = ({
       </Link>
       <h3>{singleProduct.pizza_name}</h3>
       <p>{singleProduct.description}</p>
-      
-      
+
       <div className="price">
         <p className="price-num">
           <span>Rs </span>
@@ -114,11 +153,11 @@ const MenuGridItem = ({
         </p>
 
         <button
-              onClick={addToCart}
-              className={`passive-button-style active-add-to-cart`}
-            >
-              Add to Cart
-            </button>
+          onClick={addToCart}
+          className={`passive-button-style active-add-to-cart`}
+        >
+          Add to Cart
+        </button>
       </div>
     </article>
   );
