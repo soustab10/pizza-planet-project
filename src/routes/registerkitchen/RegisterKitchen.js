@@ -57,7 +57,7 @@ const Register = ({ activateLoginModal }) => {
     setVerificationError("");
     const bodySend = JSON.stringify({ ...signupData });
     console.log(bodySend);
-    fetch("http://localhost:8080/auth/signup", {
+    fetch("http://localhost:8080/kitchen/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

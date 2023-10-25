@@ -5,15 +5,15 @@ import EmptyCart from "./EmptyCart";
 
 const Cart = () => {
   const [cartData, setCartData] = useState([]);
-  const [quantity, setQuantity] = useState(0);
+
   const increaseQuantity = () => {
-    setQuantity(quantity + 1);
+    // setQuantity(quantity + 1);
   };
 
   const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
+    // if (quantity > 1) {
+    //   setQuantity(quantity - 1);
+    // }
   };
 
   useEffect(() => {
@@ -74,19 +74,15 @@ const Cart = () => {
                       Selected Crust: {cartItem.pizzaCrust.crust_name}
                     </section>
                     <section>
-                      Selected Crust: {cartItem.pizzaSize.size_name}
+                      Selected Size: {cartItem.pizzaSize.size_name}
                     </section>
                     <section>
                       Selected Toppings:{" "}
                       {cartItem.toppings.join(", ") || "None"}
                     </section>
-                    <section className="cart-item-quantity">
-                      Quantity: {cartItem.quantity}
-                    </section>
 
                     <section>
                       <div className="">
-                        <p className="">Quantity Counter</p>
                         <div className="quantity-control">
                           <button
                             className="counter-btn"
@@ -94,7 +90,9 @@ const Cart = () => {
                           >
                             -
                           </button>
-                          <span className="counter-count">{quantity}</span>
+                          <section className="cart-item-quantity">
+                            Quantity: {cartItem.quantity}
+                          </section>
                           <button
                             className="counter-btn"
                             onClick={increaseQuantity}
@@ -111,22 +109,22 @@ const Cart = () => {
                 </section>
               );
             })}
-             <button className="cart-clear-btn">
+            <button className="cart-clear-btn">
               remove all items from the cart
             </button>
 
-            <section className="cart-totals"> 
-            Net Total: Rs. {cartData.reduce((acc, item) => acc + item.price, 0)}
+            <section className="cart-totals">
+              Net Total: Rs.{" "}
+              {cartData.reduce((acc, item) => acc + item.price, 0)}
             </section>
             <section className="checkout-interaction-btns">
-              <Link to="/payment" className="active-button-style" >
+              <Link to="/payment" className="active-button-style">
                 Proceed to payment
               </Link>
               <Link to="/menu" className="checkout-backtomenu-btn">
                 Back to menu
               </Link>
             </section>
-           
           </React.Fragment>
         )}
       </article>

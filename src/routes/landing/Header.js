@@ -153,7 +153,7 @@ const Header = ({ loginModal,
               >
                 <img src={Cart} alt="" aria-hidden="true" />
                 <p>Cart</p>
-                <p>({productsQuantity})</p>
+                
               </NavLink>
             </div>
           </li>
