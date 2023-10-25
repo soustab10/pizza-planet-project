@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from "react";
 import AddToCartButton from "../cart/AddToCartButton";
-import { allProductsData } from "../../data/AllProductsData.js";
 import { Link } from "react-router-dom";
+
+function Modal({ closeModal }) {
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <span className="close" onClick={closeModal}>
+          &times;
+        </span>
+        <h2>Login</h2>
+        {/* Add more details or components as needed */}
+      </div>
+    </div>
+  );
+}
 
 const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   const [singleProduct, setSingleProduct] = useState([]);
@@ -11,6 +24,113 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   const [selectedCrust, setSelectedCrust] = useState("Regular");
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [quantity, setQuantity] = useState(1);
+
+  const [allProductsData, setAllProductsData] = useState([]);
+  const [allCrustData, setAllCrustData] = useState([]);
+  const [allToppingsData, setAllToppingsData] = useState([]);
+  const [allSizesData, setAllSizesData] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    const fetchPizzaData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/landing/pizza");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setAllProductsData(data);
+        console.log(data);
+        console.log(allProductsData);
+        console.log(window.location.pathname.toString().substring(6));
+        const pizzaId = window.location.pathname.toString().substring(6);
+        const selectedPizza = data.find(
+          (pizza) => pizza.pizza_id.toString() === pizzaId
+        );
+        if (selectedPizza) {
+          setSingleProduct(selectedPizza);
+        } else {
+          setSingleProduct(null);
+        }
+        console.log(selectedPizza);
+      } catch (error) {
+        console.error("Error fetching pizza details:", error);
+      }
+    };
+    const fetchCrustData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/landing/pizza-crust"
+        );
+        // console.log("bb");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setAllCrustData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching pizza details:", error);
+      }
+    };
+    const fetchToppingsData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/landing/topping");
+        // console.log("bb");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setAllToppingsData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching pizza details:", error);
+      }
+    };
+
+    const fetchSizesData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/landing/pizza-size"
+        );
+        // console.log("bb");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setAllSizesData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching pizza details:", error);
+      }
+    };
+    fetchPizzaData();
+    fetchCrustData();
+    fetchToppingsData();
+    fetchSizesData();
+
+    // console.log(allProductsData);
+    // console.log(window.location.pathname.toString().substring(6));
+    // const pizzaId = window.location.pathname.toString().substring(6);
+    // const selectedPizza = allProductsData.find(
+    //   (pizza) => pizza.pizza_id.toString() === pizzaId
+    // );
+    // if (selectedPizza) {
+    //   setSingleProduct(selectedPizza);
+    // } else {
+    //   setSingleProduct(null);
+    // }
+    // console.log(selectedPizza);
+  }, []);
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -30,30 +150,13 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
     setSelectedCrust(event.target.value);
   };
 
-  const handleToppingChange = (event) => {
-    const topping = event.target.value;
+  const handleToppingChange = (topping) => {
     if (selectedToppings.includes(topping)) {
       setSelectedToppings(selectedToppings.filter((item) => item !== topping));
     } else {
       setSelectedToppings([...selectedToppings, topping]);
     }
   };
-
-  useEffect(() => {
-    document.title = `${singleProduct.pizza_name}| Pizza Planet`;
-    console.log(allProductsData);
-    console.log(window.location.pathname.toString().substring(6));
-    const pizzaId = window.location.pathname.toString().substring(6);
-    const selectedPizza = allProductsData.find(
-      (pizza) => pizza.pizza_id.toString() === pizzaId
-    );
-    if (selectedPizza) {
-      setSingleProduct(selectedPizza);
-    } else {
-      setSingleProduct(null);
-    }
-    console.log(selectedPizza);
-  }, singleProduct.pizza_name);
 
   const addToCart = async (e) => {
     e.preventDefault();
@@ -69,29 +172,31 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
       pizzaSize: {
         size_id: selectedSize,
       },
-      base_price: singleProduct.price,
       toppings: selectedToppings,
     };
     const bodySend = JSON.stringify(dataSend);
+    console.log(bodySend);
+    
     fetch("http://localhost:8080/cart/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body:bodySend,
+      body: bodySend,
     })
       .then((response) => {
         console.log(response.status);
-        
+        if (response.status === 403) {
+          openModal();
+          window.alert("Please login to add to cart");
+        }
         if (!response.ok) {
           throw new Error("Username and password do not match.");
         }
         return response.json();
       })
       .then((data) => {
-        
-        
-       console.log(data);
+        console.log(data);
       })
       .catch((error) => {
         // setFormError(error.message);
@@ -103,6 +208,7 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
       <Link to="/menu" className="back-btn">
         ← Back
       </Link>
+      {isModalOpen && <Modal closeModal={closeModal} />}
       <article className="single-item flex-container flex-column txt-white">
         <img
           src={singleProduct?.pizza_image_url}
@@ -117,13 +223,15 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
             <label className="select-label">
               Select Size:
               <select
+                value={selectedSize.id}
                 className="select-dropdown"
-                value={selectedSize}
                 onChange={handleSizeChange}
               >
-                <option value="Small">Small</option>
-                <option value="Medium">Medium</option>
-                <option value="Large">Large</option>
+                {allSizesData.map((size) => (
+                  <option key={size.size_id} value={size.size_id}>
+                    {size.size_name}
+                  </option>
+                ))}
               </select>
             </label>
           </section>
@@ -131,13 +239,15 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
             <label className="select-label">
               Select Crust:
               <select
+                value={selectedCrust.id}
                 className="select-dropdown"
-                value={selectedCrust}
                 onChange={handleCrustChange}
               >
-                <option value="Regular">Regular</option>
-                <option value="Thin Crust">Thin Crust</option>
-                <option value="Stuffed Crust">Stuffed Crust</option>
+                {allCrustData.map((crust) => (
+                  <option key={crust.crust_id} value={crust.crust_id}>
+                    {crust.crust_name}
+                  </option>
+                ))}
               </select>
             </label>
           </section>
@@ -145,36 +255,20 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
             <label className="toppings-label">
               Select Toppings (Multiple Selections Allowed):
               <div>
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    value="Pepperoni"
-                    checked={selectedToppings.includes("Pepperoni")}
-                    onChange={handleToppingChange}
-                    className="checkbox-input"
-                  />
-                  Pepperoni
-                </label>
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    value="Mushrooms"
-                    checked={selectedToppings.includes("Mushrooms")}
-                    onChange={handleToppingChange}
-                    className="checkbox-input"
-                  />
-                  Mushrooms
-                </label>
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    value="Olives"
-                    checked={selectedToppings.includes("Olives")}
-                    onChange={handleToppingChange}
-                    className="checkbox-input"
-                  />
-                  Olives
-                </label>
+                <form>
+                  {allToppingsData.map((topping) => (
+                    <label key={topping.topping_id} className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        className="checkbox-input"
+                        value={topping.topping_id}
+                        checked={selectedToppings.includes(topping.topping_id)}
+                        onChange={() => handleToppingChange(topping.topping_id)}
+                      />
+                      {topping.topping_name}
+                    </label>
+                  ))}
+                </form>
               </div>
             </label>
           </section>
@@ -195,7 +289,7 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
 
           <section className="price">
             <p className="price-num">
-              <span>$</span>
+              <span>Rs. </span>
               {singleProduct.price}
             </p>
 
@@ -211,6 +305,7 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
             <p>Selected Size: {selectedSize}</p>
             <p>Selected Crust: {selectedCrust}</p>
             <p>Selected Toppings: {selectedToppings.join(", ") || "None"}</p>
+            <p>Quantity: {quantity}</p>
           </div>
         </section>
       </article>

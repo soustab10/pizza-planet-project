@@ -20,6 +20,7 @@ const MenuCategories = ({ allCategories, changeCategory, resetPagination, findMe
           <li key={category.id}>
             <NavLink
               to="/menu"
+              className="flex flex-col"
               onClick={() => {
                 changeCategory(category.name);
                 ResetLocation();

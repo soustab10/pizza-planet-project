@@ -8,6 +8,9 @@ const MenuGridItem = ({
   singleProduct,
   handleAddProduct,
   handleRemoveProduct,
+  allCrustData,
+  allSizesData,
+  allToppingsData,
 }) => {
   const [selectedAttributes, setSelectedAttributes] = useState([]);
   const [targetAttribute, setTargetAttribute] = useState("");
@@ -30,11 +33,22 @@ const MenuGridItem = ({
     });
   };
 
+
+  const [selectedCrust, setSelectedCrust] = useState(allCrustData[0]); // Set the default selected crust
+
+  const handleCrustChange = (event) => {
+    const selectedCrustId = parseInt(event.target.value, 10);
+    const newSelectedCrust = allCrustData.find((crust) => crust.crust_id === selectedCrustId);
+    setSelectedCrust(newSelectedCrust);
+   
+  };
+
   return (
-    <article className="menu-grid-item flex-container flex-column txt-white">
+    <article className="menu-grid-item flex-container flex-row txt-white">
       <Link
         onClick={ResetLocation}
         to={`/menu/${singleProduct.pizza_id}`}
+        
         className="menu-item-link"
       >
         <img
@@ -44,10 +58,11 @@ const MenuGridItem = ({
       </Link>
       <h3>{singleProduct.pizza_name}</h3>
       <p>{singleProduct.description}</p>
-
+      
+      
       <div className="price">
         <p className="price-num">
-          <span>$</span>
+          <span>Rs </span>
           {singleProduct.price}
         </p>
 
