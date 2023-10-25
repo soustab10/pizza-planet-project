@@ -20,8 +20,8 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   const [singleProduct, setSingleProduct] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState([]);
   const [targetAttribute, setTargetAttribute] = useState("");
-  const [selectedSize, setSelectedSize] = useState("Medium");
-  const [selectedCrust, setSelectedCrust] = useState("Regular");
+  const [selectedSize, setSelectedSize] = useState(1);
+  const [selectedCrust, setSelectedCrust] = useState(1);
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -136,6 +136,7 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   }, []);
 
   const increaseQuantity = () => {
+    const newPrice = totalPrice * quantity;
     setQuantity(quantity + 1);
   };
 
@@ -147,13 +148,37 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
 
   const handleSizeChange = (event) => {
     setSelectedSize(event.target.value);
+    const selectedSizePrice = Math.round(
+      allSizesData.find((size) => size.size_id === selectedSize)
+        ?.cost_multiplier
+    );
+    const newPrice = totalPrice + selectedSizePrice;
+    console.log(newPrice, selectedSizePrice);
+    setTotalPrice(newPrice);
   };
 
   const handleCrustChange = (event) => {
     setSelectedCrust(event.target.value);
+    const selectedCrustPrice = allCrustData.find(
+      (crust) => crust.crust_id === selectedCrust
+    )?.price;
+    const newPrice = totalPrice + selectedCrustPrice;
+    setTotalPrice(newPrice);
   };
 
   const handleToppingChange = (topping) => {
+    let newPrice = totalPrice;
+    const selectedToppingPrice = allToppingsData.find(
+      (t) => t.topping_id === topping
+    )?.price;
+
+    if (selectedToppings.includes(topping)) {
+      newPrice -= selectedToppingPrice;
+    } else {
+      newPrice += selectedToppingPrice;
+    }
+
+    setTotalPrice(newPrice);
     if (selectedToppings.includes(topping)) {
       setSelectedToppings(selectedToppings.filter((item) => item !== topping));
     } else {
@@ -293,14 +318,17 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
           <section className="price">
             <p className="price-num">
               <span>Rs. </span>
-              {singleProduct.price}
+              {totalPrice}
+            </p>
+            <p className="price-num">
+              Net Total: Rs {totalPrice * quantity}
             </p>
 
             <button
               onClick={addToCart}
               className={`passive-button-style active-add-to-cart`}
             >
-              Asli Add to Cart
+              Add to Cart
             </button>
           </section>
 
