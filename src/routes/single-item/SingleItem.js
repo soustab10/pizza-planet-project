@@ -24,6 +24,7 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   const [selectedCrust, setSelectedCrust] = useState("Regular");
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const [allProductsData, setAllProductsData] = useState([]);
   const [allCrustData, setAllCrustData] = useState([]);
@@ -56,8 +57,10 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
         const selectedPizza = data.find(
           (pizza) => pizza.pizza_id.toString() === pizzaId
         );
+
         if (selectedPizza) {
           setSingleProduct(selectedPizza);
+          setTotalPrice(selectedPizza.price);
         } else {
           setSingleProduct(null);
         }
@@ -176,7 +179,7 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
     };
     const bodySend = JSON.stringify(dataSend);
     console.log(bodySend);
-    
+
     fetch("http://localhost:8080/cart/add", {
       method: "POST",
       headers: {

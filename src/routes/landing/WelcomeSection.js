@@ -32,15 +32,7 @@ const WelcomeSection = () => {
           Welcome to <span>Pizza Planet</span> restaurant
         </h2>
         <p>
-          Founded in 1982 we bring pizza slice by slice to the next level!
-          Unique branding and being in the pizza industry is the formula to
-          out success. We do understand what people want and convert desires
-          to unique experiences of taste. Freshness, orignality and quality is
-          only the small part of out priorities. Affortable costs, located
-          almost anywhere you go, amazing online operational system to order
-          food in one click. Easy to navigate pre-order options and amazing
-          options for corporate parties! At Pizaa Time we care about you
-          because you are the one who makes us special!
+        Pizza Planet is a renowned pizza restaurant chain dedicated to delivering the ultimate pizza experience. With a passion for crafting the perfect pizzas, we offer a delectable selection of hand-tossed, oven-baked creations. Our commitment to quality ingredients, a variety of mouthwatering toppings, and a commitment to taste perfection ensures that every slice is a journey through flavor. Whether you're a fan of classic favorites or crave adventurous combinations, Pizza Planet is your go-to destination for savoring the finest, freshly made pizzas. Come and enjoy the taste of perfection at Pizza Planet, where every pizza is a slice of culinary excellence.
         </p>
       </section>
       <LazyLoadImage

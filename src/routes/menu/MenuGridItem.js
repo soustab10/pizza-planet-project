@@ -34,7 +34,8 @@ const MenuGridItem = ({
   };
 
 
-  const [selectedCrust, setSelectedCrust] = useState(allCrustData[0]); // Set the default selected crust
+  const [selectedCrust, setSelectedCrust] = useState(allCrustData[0].crust_id); 
+  const [selectedSize, setSelectedSize] = useState(allSizesData[0].size_id);// Set the default selected crust
 
   const handleCrustChange = (event) => {
     const selectedCrustId = parseInt(event.target.value, 10);
@@ -42,6 +43,52 @@ const MenuGridItem = ({
     setSelectedCrust(newSelectedCrust);
    
   };
+
+  const addToCart = async (e) => {
+    e.preventDefault();
+    const dataSend = {
+      token: sessionStorage.getItem("token"),
+      pizza: {
+        pizza_id: window.location.pathname.toString().substring(6),
+      },
+      quantity: 1,
+      pizzaCrust: {
+        crust_id: selectedCrust,
+      },
+      pizzaSize: {
+        size_id: selectedSize,
+      },
+      toppings: [],
+    };
+    const bodySend = JSON.stringify(dataSend);
+    console.log(bodySend);
+
+    fetch("http://localhost:8080/cart/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: bodySend,
+    })
+      .then((response) => {
+        console.log(response.status);
+        if (response.status === 403) {
+          
+          window.alert("Please login to add to cart");
+        }
+        if (!response.ok) {
+          throw new Error("Username and password do not match.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        // setFormError(error.message);
+      });
+  };
+
 
   return (
     <article className="menu-grid-item flex-container flex-row txt-white">
@@ -66,14 +113,12 @@ const MenuGridItem = ({
           {singleProduct.price}
         </p>
 
-        <AddToCartButton
-          handleAddProduct={handleAddProduct}
-          handleRemoveProduct={handleRemoveProduct}
-          singleProduct={singleProduct}
-          selectedAttributes={selectedAttributes}
-          targetAttribute={targetAttribute}
-          // setTargetAttribute={setTargetAttribute}
-        />
+        <button
+              onClick={addToCart}
+              className={`passive-button-style active-add-to-cart`}
+            >
+              Add to Cart
+            </button>
       </div>
     </article>
   );
