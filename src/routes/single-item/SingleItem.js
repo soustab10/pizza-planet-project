@@ -135,7 +135,6 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   }, []);
 
   const increaseQuantity = () => {
-    const newPrice = totalPrice * quantity;
     setQuantity(quantity + 1);
   };
 

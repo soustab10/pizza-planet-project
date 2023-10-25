@@ -478,28 +478,11 @@ function App() {
           path="/cart"
           element={
             <Cart
-              CartItem={
-                <CartItem
-                  clearCart={clearCart}
-                  cartItems={cartItems}
-                  handleAddProduct={handleAddProduct}
-                  handleRemoveProduct={handleRemoveProduct}
-                  cartTotals={
-                    <CartTotals
-                      className="cart-carttotals"
-                      totalPayment={totalPayment}
-                      productsQuantity={productsQuantity}
-                      taxes={taxes}
-                      validLogin={validLogin}
-                      showModal={showModal}
-                      isModalActive={isModalActive}
-                      activateLoginModal={activateLoginModal}
-                    />
-                  }
-                />
-              }
-              cartItems={cartItems}
-              clearedCart={clearedCart}
+              CartItem
+              allProductsData={allProductsData}
+              allCrustData={allCrustData}
+              allToppingsData={allToppingsData}
+              allSizesData={allSizesData}
             />
           }
         />
