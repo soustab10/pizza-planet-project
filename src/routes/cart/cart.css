@@ -184,6 +184,20 @@
   transition: all ease-in-out 0.3s;
 }
 
+.delete-button {
+  background-color: #ff0000; /* Red background color */
+  color: #fff; /* White text color */
+  padding: 8px 16px; /* Padding for the button */
+  border: none; /* Remove button border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Show pointer cursor on hover */
+}
+
+.delete-button:hover {
+  background-color: #cc0000; /* Darker red on hover */
+}
+
+
 @media (hover: hover) {
   .cart-item-add-qty button:hover {
     color: var(--yellow);

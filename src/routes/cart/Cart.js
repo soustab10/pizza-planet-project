@@ -42,9 +42,109 @@ const Cart = () => {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         setCartData(data);
       });
   }, []);
+
+
+  const deleteCartItem = (cartItem) => {
+    console.log("delete from cart");
+    // e.preventDefault();
+    // var myHeaders = new Headers();
+    // const userToken = sessionStorage.getItem("token");
+    // console.log(userToken);
+    // myHeaders.append("Content-Type", "application/json");
+    // myHeaders.append("Authorization", `Bearer ${userToken}`);
+    // const convertedToppings = selectedToppings.map((toppingId) => ({
+    //   topping_id: toppingId,
+    // }));
+
+    // var dataSend = JSON.stringify({
+    //   pizza: {
+    //     pizza_id: window.location.pathname.toString().substring(6),
+    //   },
+    //   quantity: quantity,
+    //   pizzaCrust: {
+    //     crust_id: selectedCrust,
+    //   },
+    //   pizzaSize: {
+    //     size_id: selectedSize,
+    //   },
+    //   toppings: convertedToppings,
+    // });
+
+    // console.log(dataSend);
+
+    // var requestOptions = {
+    //   method: "POST",
+    //   headers: myHeaders,
+    //   body: dataSend,
+    //   redirect: "follow",
+    // };
+
+    // fetch("http://localhost:8080/cart/add", requestOptions)
+    //   .then((response) => {
+    //     console.log(response.status);
+    //     if (response.status === 403) {
+    //       window.alert("Please login to add to cart");
+    //     }
+    //     if (!response.ok) {
+    //       throw new Error("Username and password do not match.");
+    //     }
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
+    const userToken = sessionStorage.getItem("token");
+    console.log(userToken);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
+    const convertedToppings = cartItem.toppings.map((item) => ({ topping_id: item.topping_id }));
+
+    var dataSend = JSON.stringify({
+      cart_id: cartItem.cart_id,
+      user_id: cartItem.user_id,
+      pizza: {
+        pizza_id: cartItem.pizza.pizza_id,
+      },
+      quantity: cartItem.quantity,
+      pizzaCrust: {
+        crust_id: cartItem.pizzaCrust.crust_id,
+      },
+      pizzaSize: {
+        size_id: cartItem.pizzaSize.size_id,
+      },
+      toppings: convertedToppings,
+    });
+
+    console.log(dataSend);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: dataSend,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8080/cart/delete", requestOptions)
+      .then((response) => {
+        console.log(response.status);
+        if (response.status === 403) {
+          window.alert("Please login to add to cart");
+        }
+        if (!response.ok) {
+          console.log("error",response);
+        }
+        // return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        window.location.reload();
+      });
+  };
   return (
     <main className="cart">
       <h2>Shopping cart</h2>
@@ -78,10 +178,16 @@ const Cart = () => {
                     </section>
                     <section>
                       Selected Toppings:{" "}
-                      {cartItem.toppings.join(", ") || "None"}
+                      <ul>
+                        {cartItem.toppings.map((item) => (
+                          <li key={item.topping_id}>
+                            <p>{item.topping_name}</p>
+                          </li>
+                        ))}
+                      </ul>
                     </section>
 
-                    <section>
+                    {/* <section>
                       <div className="">
                         <div className="quantity-control">
                           <button
@@ -101,10 +207,16 @@ const Cart = () => {
                           </button>
                         </div>
                       </div>
-                    </section>
+                    </section> */}
                     <section className="cart-item-interaction">
                       <p className="cart-item-price">Rs. {cartItem.price}</p>
                     </section>
+                    <button
+                      className="delete-button"
+                      onClick={() => deleteCartItem(cartItem)}
+                    >
+                      Delete from Cart
+                    </button>
                   </section>
                 </section>
               );

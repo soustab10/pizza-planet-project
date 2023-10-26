@@ -23,6 +23,53 @@ const Payment = ({ cartItems, totalPayment }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormError(validate(formValue));
+    const userToken = sessionStorage.getItem("token");
+    console.log(userToken);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
+    
+
+    // var dataSend = JSON.stringify({
+    //   cart_id: cartItem.cart_id,
+    //   user_id: cartItem.user_id,
+    //   pizza: {
+    //     pizza_id: cartItem.pizza.pizza_id,
+    //   },
+    //   quantity: cartItem.quantity,
+    //   pizzaCrust: {
+    //     crust_id: cartItem.pizzaCrust.crust_name,
+    //   },
+    //   pizzaSize: {
+    //     size_id: cartItem.pizzaSize.size_name,
+    //   },
+    //   toppings: convertedToppings,
+    // });
+    var dataSend = "";
+    console.log(dataSend);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: dataSend,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8080/cart/delete", requestOptions)
+      .then((response) => {
+        console.log(response.status);
+        if (response.status === 403) {
+          window.alert("Please login to add to cart");
+        }
+        if (!response.ok) {
+          console.log("error",response);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        
+      });
     setSubmit(true);
     setTransactionId(uuidv4());
     ResetLocation();

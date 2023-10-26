@@ -19,8 +19,8 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   const [singleProduct, setSingleProduct] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState([]);
   const [targetAttribute, setTargetAttribute] = useState("");
-  const [selectedSize, setSelectedSize] = useState(1);
-  const [selectedCrust, setSelectedCrust] = useState(1);
+  const [selectedSize, setSelectedSize] = useState(4);//change it to first starting size_id
+  const [selectedCrust, setSelectedCrust] = useState(6); // change it to first starting crust_id
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -145,20 +145,19 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   };
 
   const handleSizeChange = (event) => {
+    const sizeId = event.target.value;
     setSelectedSize(event.target.value);
-    const selectedSizePrice = Math.round(
-      allSizesData.find((size) => size.size_id === selectedSize)
-        ?.cost_multiplier
-    );
-    const newPrice = totalPrice + selectedSizePrice;
-    console.log(newPrice, selectedSizePrice);
+    const selectedItemId = allSizesData.find((item) => item.size_id.toString() === sizeId);
+    const newPrice = Math.round(totalPrice * selectedItemId.cost_multiplier);
+
     setTotalPrice(newPrice);
   };
 
   const handleCrustChange = (event) => {
+    const crustId = event.target.value;
     setSelectedCrust(event.target.value);
     const selectedCrustPrice = allCrustData.find(
-      (crust) => crust.crust_id === selectedCrust
+      (crust) => crust.crust_id.toString() === crustId
     )?.price;
     const newPrice = totalPrice + selectedCrustPrice;
     setTotalPrice(newPrice);
@@ -191,6 +190,9 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
     console.log(userToken);
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${userToken}`);
+    const convertedToppings = selectedToppings.map((toppingId) => ({
+      topping_id: toppingId,
+    }));
 
     var dataSend = JSON.stringify({
       pizza: {
@@ -203,8 +205,10 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
       pizzaSize: {
         size_id: selectedSize,
       },
-      toppings: selectedToppings,
+      toppings: convertedToppings,
     });
+
+    console.log(dataSend);
 
     var requestOptions = {
       method: "POST",
