@@ -36,8 +36,9 @@ const Register = ({ activateLoginModal }) => {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     console.log(formValue);
-    console.log(1);
+    console.log(100);
     const dob = new Date(formValue.dob);
     const currentDate = new Date();
     const ageInMilliseconds = currentDate - dob;
@@ -62,90 +63,86 @@ const Register = ({ activateLoginModal }) => {
       state: formValue.state,
       pincode: formValue.pincode,
     };
-    setLoading(true);
-    console.log(1);
-    e.preventDefault();
-    setFormError(validate(formValue));
+    //setLoading(true);
+    console.log(71);
+    // e.preventDefault();
+    //setFormError(validate(formValue));
     window.scrollTo(0, 0);
     let currForm = { ...formValue };
     currForm.email = currForm.email.toLowerCase();
-    console.log(1);
-    setVerificationError("");
+    console.log(10);
+    //setVerificationError("");
     const bodySend = JSON.stringify({ ...signupData });
     console.log(bodySend);
-    if (Object.keys(validate(formValue)).length > 0) {
-      setLoading(false);
-      return;
-    } else {
-      let currForm = { ...formValue };
-      if (currForm.repeatPassword.length > 0) {
-        delete currForm.repeatPassword;
-      }
-      if (currForm.address !== undefined) {
-        delete currForm.address;
-      }
-      if (currForm.number !== undefined) {
-        delete currForm.number;
-      }
-    }
 
-
-    fetch("http://localhost:8080/customer/signup", {
+    // if (Object.keys(validate(formValue)).length > 0) {
+    //   setLoading(false);
+    //   return;
+    // } else {
+    //   let currForm = { ...formValue };
+    //   if (currForm.repeatPassword.length > 0) {
+    //     delete currForm.repeatPassword;
+    //   }
+    //   if (currForm.address !== undefined) {
+    //     delete currForm.address;
+    //   }
+    //   if (currForm.number !== undefined) {
+    //     delete currForm.number;
+    //   }
+    // }
+    console.log(781);
+    await fetch("http://localhost:8080/customer/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: bodySend,
-    }).then((resp) => {
-      resp.json().then((res) => {
-        console.log(1);
-        window.alert("User created successfully. Login with your credentials to continue.");
-        
-      });
-    });
-    
+    })
+      .then((response) => {
+        return response.json();
+      })
+      ;
 
-      // const accCreation = await createUser(currForm);
-      // if (accCreation === false) {
-      //   setLoading(false);
-      //   setSubmit(false);
-      //   setRegistrationFail(true);
-      //   setFormValue({
-      //     id: "",
-      //     email: "",
-      //     password: "",
-      //     repeatPassword: "",
-      //     first_name: "",
-      //     last_name: "",
-      //     username: "",
-      //     house_number: "",
-      //     street_name: "",
-      //     city: "",
-      //     state: "",
-      //     pincode: "",
-      //     number: "",
-      //   });
-      // } else {
-      //   setLoading(false);
-      //   setRegistrationFail(false);
-      //   setSubmit(true);
-      //   setFormValue({
-      //     id: "",
-      //     email: "",
-      //     password: "",
-      //     repeatPassword: "",
-      //     first_name: "",
-      //     last_name: "",
-      //     username: "",
-      //     house_number: "",
-      //     street_name: "",
-      //     city: "",
-      //     state: "",
-      //     pincode: "",
-      //     number: "",
-      //   });
-      // }
-    
+    // const accCreation = await createUser(currForm);
+    // if (accCreation === false) {
+    //   setLoading(false);
+    //   setSubmit(false);
+    //   setRegistrationFail(true);
+    //   setFormValue({
+    //     id: "",
+    //     email: "",
+    //     password: "",
+    //     repeatPassword: "",
+    //     first_name: "",
+    //     last_name: "",
+    //     username: "",
+    //     house_number: "",
+    //     street_name: "",
+    //     city: "",
+    //     state: "",
+    //     pincode: "",
+    //     number: "",
+    //   });
+    // } else {
+    //   setLoading(false);
+    //   setRegistrationFail(false);
+    //   setSubmit(true);
+    //   setFormValue({
+    //     id: "",
+    //     email: "",
+    //     password: "",
+    //     repeatPassword: "",
+    //     first_name: "",
+    //     last_name: "",
+    //     username: "",
+    //     house_number: "",
+    //     street_name: "",
+    //     city: "",
+    //     state: "",
+    //     pincode: "",
+    //     number: "",
+    //   });
+    // }
   };
   const handleValidation = (e) => {
     const { name, value } = e.target;
@@ -239,13 +236,11 @@ const Register = ({ activateLoginModal }) => {
             <span className="registration-input-err">{formError.email}</span>
           </section>
           <section className="email-section">
-          
             <input
               type="date"
               placeholder="Date of Birth"
               name="dob"
               style={{ color: "#bfbfbf" }}
-            
               value={formValue.dob}
               onChange={handleValidation}
             />
