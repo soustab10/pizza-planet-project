@@ -3,7 +3,7 @@ const validateForm = (form) => (value) => {
     const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
     const numberRegex = /\d/;
     const vehicleRegex  = /^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/;
-    const pinRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    const pinRegex = /^[1-9]{1}[0-9]{2}\\s{0,1}[0-9]{3}$/;
     if (form === "newsletter") {
         if (!value.email) {
             errors.email = "Please enter an email"
@@ -13,11 +13,17 @@ const validateForm = (form) => (value) => {
         }
     }
     else if (form === "registration") {
-        if (!value.fullname) {
-            errors.fullname = "Please enter full name"
+        if (!value.first_name) {
+            errors.first_name = "Please enter First name"
         }
-        else if (value.fullname.length < 3) {
-            errors.fullname = "Name is too short"
+        else if (value.first_name.length < 3) {
+            errors.first_name = "Name is too short"
+        }
+        if (!value.last_name) {
+            errors.last_name = "Please enter Last name"
+        }
+        else if (value.last_name.length < 3) {
+            errors.last_name = "Name is too short"
         }
         if (!value.email) {
             errors.email = "Please enter email"
@@ -25,12 +31,33 @@ const validateForm = (form) => (value) => {
         else if (!emailRegex.test(value.email)) {
             errors.email = "Please enter valid email"
         }
-        else if (!vehicleRegex.test(value.vehicle_number)) {
-            errors.vehicle = "Please enter valid Vehicle Number"
+        // else if (!vehicleRegex.test(value.vehicle_number)) {
+        //     errors.vehicle = "Please enter valid Vehicle Number"
+        // }
+        if (!value.username) {
+            errors.username = "Please enter username"
         }
-        else if(!pinRegex.test(value.pincode)){
-            errors.pincode = "Please enter valid Pincode"
+        
+        if (!value.house_number) {
+            errors.house_number = "Please enter House Number"
         }
+        
+        if (!value.street_name) {
+            errors.street_name = "Please enter Street Name"
+        }
+        
+        if (!value.city) {
+            errors.city = "Please enter City"
+        }
+        
+        if (!value.state) {
+            errors.state = "Please enter State"
+        }
+        
+        if (!value.pincode) {
+            errors.pincode = "Please enter Pincode"
+        }
+       
         if (!value.password) {
             errors.password = "Please enter a valid password"
         }

@@ -66,7 +66,7 @@ const Register = ({ activateLoginModal }) => {
     //setLoading(true);
     console.log(71);
     // e.preventDefault();
-    //setFormError(validate(formValue));
+    setFormError(validate(formValue));
     window.scrollTo(0, 0);
     let currForm = { ...formValue };
     currForm.email = currForm.email.toLowerCase();
@@ -74,11 +74,12 @@ const Register = ({ activateLoginModal }) => {
     //setVerificationError("");
     const bodySend = JSON.stringify({ ...signupData });
     console.log(bodySend);
-
-    // if (Object.keys(validate(formValue)).length > 0) {
-    //   setLoading(false);
-    //   return;
-    // } else {
+    console.log(Object.keys(validate(formValue)));
+    if (Object.keys(validate(formValue)).length > 0) {
+      setLoading(false);
+      return;
+    } 
+    // else {
     //   let currForm = { ...formValue };
     //   if (currForm.repeatPassword.length > 0) {
     //     delete currForm.repeatPassword;
@@ -99,7 +100,8 @@ const Register = ({ activateLoginModal }) => {
       body: bodySend,
     })
       .then((response) => {
-        return response.json();
+        window.alert("User Registered Successfully. Login with credentials to continue!");
+        window.location.href = "/";
       })
       ;
 
