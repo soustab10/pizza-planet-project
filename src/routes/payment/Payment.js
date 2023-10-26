@@ -5,6 +5,7 @@ import ResetLocation from "../../helpers/ResetLocation";
 import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
 import validateForm from "../../components/validateForm";
+import { type } from "@testing-library/user-event/dist/type/index.js";
 
 const Payment = ({ cartItems, totalPayment }) => {
   const [formValue, setFormValue] = useState({
@@ -23,30 +24,23 @@ const Payment = ({ cartItems, totalPayment }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormError(validate(formValue));
+    console.log(validate(formValue));
+    const timeStamp = Date.now();
+    
+    if (Object.keys(validate(formValue)).length > 0) {
+      return;
+    }
     const userToken = sessionStorage.getItem("token");
     console.log(userToken);
+    const transacId = `${timeStamp}`;
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${userToken}`);
-    
-
-    // var dataSend = JSON.stringify({
-    //   cart_id: cartItem.cart_id,
-    //   user_id: cartItem.user_id,
-    //   pizza: {
-    //     pizza_id: cartItem.pizza.pizza_id,
-    //   },
-    //   quantity: cartItem.quantity,
-    //   pizzaCrust: {
-    //     crust_id: cartItem.pizzaCrust.crust_name,
-    //   },
-    //   pizzaSize: {
-    //     size_id: cartItem.pizzaSize.size_name,
-    //   },
-    //   toppings: convertedToppings,
-    // });
-    var dataSend = "";
-    console.log(dataSend);
+    console.log(transacId);
+    console.log(typeof transacId);
+    var dataSend = JSON.stringify({
+      transaction_id: "123456abcdddgdf",
+    });
 
     var requestOptions = {
       method: "POST",
@@ -55,23 +49,25 @@ const Payment = ({ cartItems, totalPayment }) => {
       redirect: "follow",
     };
 
-    fetch("http://localhost:8080/cart/delete", requestOptions)
+    fetch("http://localhost:8080/order/place", requestOptions)
       .then((response) => {
         console.log(response.status);
-        if (response.status === 403) {
-          window.alert("Please login to add to cart");
+        if (response.status === 400) {
+          window.alert("No Kitchens Available in your Area!");
+          window.location.href = "/cart";
+          return;
         }
         if (!response.ok) {
-          console.log("error",response);
+          console.log("error", response);
+          return;
         }
-        return response.json();
       })
       .then((data) => {
         console.log(data);
-        
+        setSubmit(true);
       });
-    setSubmit(true);
-    setTransactionId(uuidv4());
+    
+
     ResetLocation();
   };
 
