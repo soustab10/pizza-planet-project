@@ -24,6 +24,8 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
   const [loading, setLoading] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [profileData, setProfileData] = useState({});
+  const [email,setEmail]=useState("")
+  const[phone_no,setPhone_no]=useState("")
   const navigate = useNavigate();
   const validate = validateForm("profile");
   const toggleForm = () => {
@@ -34,6 +36,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
     const { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value });
   };
+
 
   useEffect(() => {
     document.title = "Profile | Pizza Planet";
@@ -65,7 +68,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
         setProfileData(data);
         setFormValue({
           id: data.id,
-          email: data.email,
+          email: data.email[0].email,
           password: "",
           repeatPassword: "",
           first_name: data.first_name,
@@ -76,8 +79,10 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
           city: data.city,
           state: data.state,
           pincode: data.pincode,
-          number: data.phone_no,
+          number: data.phone_no[0].phone_no,
         });
+        setEmail(data.email[0].email)
+        setPhone_no(data.phone_no[0].phone_no)
       });
   }, []);
 
@@ -403,20 +408,8 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
             <hr />
             <section className="profile-information-section">
               <h3>Email</h3>
-              <p>
-                {profileData.email !== null ? (
-                  <p>
-                    {/* <ul>
-                      {profileData.email.map((mail) => (
-                        <li key={mail.id}>
-                          <p> {mail.email}</p>
-                        </li>
-                      ))}
-                    </ul> */}
-                  </p>
-                ) : (
-                  <p>N/A</p>
-                )}
+              <p value={email}>
+              {email}
               </p>
             </section>
             <hr />
@@ -466,11 +459,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
             <hr />
             <section className="profile-information-section">
               <h3>Contact Number</h3>
-              {profileData.phone_no !== null ? (
-                <p>{profileData.phone}</p>
-              ) : (
-                <p>N/A</p>
-              )}
+              {phone_no}
             </section>
             <hr />
           </article>
