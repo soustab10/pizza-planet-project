@@ -26,6 +26,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
   const [viewOrder, setViewOrder] = useState(false);
   const [kitchenList, setKitchenList] = useState([]);
   const [orderList, setOrderList] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("");
   const navigate = useNavigate();
   const validate = validateForm("partner_dashboard");
   const toggleForm = () => {
@@ -130,11 +131,11 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       redirect: "follow",
     };
 
-    fetch(`http://localhost:8080/order`, newRequestOptions)
+    fetch(`http://localhost:8080/partner/orders`, newRequestOptions)
       .then((response) => {
         console.log(response.status);
-        if (response.status === 403) {
-          window.alert("Please login with credentials!");
+        if (response.status === 500) {
+          window.alert("No Current Orders");
         }
         if (!response.ok) {
           throw new Error("Username and password do not match.");
@@ -202,8 +203,40 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
     );
   };
 
+  const handleStatusChange = (event, order_id) => {
+    const selectedValue = event.target.value;
+    console.log(selectedValue);
+    const userToken = sessionStorage.getItem("token");
+    console.log(userToken);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
 
- 
+    var requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      `http://localhost:8080/partner/update-order-status/${selectedValue}/${order_id}`,
+      requestOptions
+    ).then((response) => {
+      console.log(response.status);
+      if (response.status === 403) {
+        window.alert("Please login with credentials!");
+      }
+      if (!response.ok) {
+        setLoading(false);
+        return;
+      }
+      console.log(response);
+      setLoading(false);
+      window.alert("Status Updated!");
+      window.location.reload();
+    });
+  };
+
   return (
     <main className="profile">
       <h2>Partner information</h2>
@@ -367,6 +400,30 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
                         </p>
                         <p>Order Total: {item.total_amount}</p>
                         <p>Status: {item.delivery_status}</p>
+                        <div>
+                          {item.delivery_status === "DELIVERED" ? (
+                            <div>
+                              <p>Order is Delivered</p>
+                            </div>
+                          ) : (
+                            <section>
+                              Change Order Status
+                              <select
+                                value={selectedStatus}
+                                onChange={(event) =>
+                                  handleStatusChange(event, item.order_id)
+                                }
+                              >
+                                <option value="">Select Status</option>
+                                <option value="WITH_RESTAURANT">
+                                  WITH RESTAURANT
+                                </option>
+                                <option value="OTW">Out for Delivery</option>
+                                <option value="DELIVERED">Delivered</option>
+                              </select>
+                            </section>
+                          )}
+                        </div>
                       </li>
                     ))}
                   </ul>
@@ -403,7 +460,6 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
           </section>
         </React.Fragment>
       )}
-
     </main>
   );
 };
