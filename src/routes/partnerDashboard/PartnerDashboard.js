@@ -382,51 +382,55 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
             <div>
               {viewOrder ? (
                 <div>
-                  <ul className="kitchen-list-item">
-                    {orderList.map((item) => (
-                      <li key={item.order_id} className="kitchen-list-item-3">
-                        <p>Order Details:</p>
-                        <p>Order ID: {item.order_id}</p>
-                        <p>
-                          Delivering From Kitchen Address:{" "}
-                          {item.kitchen.street_name} {item.kitchen.plot}{" "}
-                          {item.kitchen.city} {item.kitchen.state}
-                          {item.kitchen.pincode}{" "}
-                        </p>
-                        <p>
-                          Your Delivery Partner Details:{" "}
-                          {item.partner.first_name} {item.partner.last_name}{" "}
-                          Phone:{item.partner.phone_number}
-                        </p>
-                        <p>Order Total: {item.total_amount}</p>
-                        <p>Status: {item.delivery_status}</p>
-                        <div>
-                          {item.delivery_status === "DELIVERED" ? (
-                            <div>
-                              <p>Order is Delivered</p>
-                            </div>
-                          ) : (
-                            <section>
-                              Change Order Status
-                              <select
-                                value={selectedStatus}
-                                onChange={(event) =>
-                                  handleStatusChange(event, item.order_id)
-                                }
-                              >
-                                <option value="">Select Status</option>
-                                <option value="WITH_RESTAURANT">
-                                  WITH RESTAURANT
-                                </option>
-                                <option value="OTW">Out for Delivery</option>
-                                <option value="DELIVERED">Delivered</option>
-                              </select>
-                            </section>
-                          )}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                  {orderList.length === 0 ? (
+                    <div className="kitchen-list-item">No Orders</div>
+                  ) : (
+                    <ul className="kitchen-list-item">
+                      {orderList.map((item) => (
+                        <li key={item.order_id} className="kitchen-list-item-3">
+                          <p>Order Details:</p>
+                          <p>Order ID: {item.order_id}</p>
+                          <p>
+                            Delivering From Kitchen Address:{" "}
+                            {item.kitchen.street_name} {item.kitchen.plot}{" "}
+                            {item.kitchen.city} {item.kitchen.state}
+                            {item.kitchen.pincode}{" "}
+                          </p>
+                          <p>
+                            Your Delivery Partner Details:{" "}
+                            {item.partner.first_name} {item.partner.last_name}{" "}
+                            Phone:{item.partner.phone_number}
+                          </p>
+                          <p>Order Total: {item.total_amount}</p>
+                          <p>Status: {item.delivery_status}</p>
+                          <div>
+                            {item.delivery_status === "DELIVERED" ? (
+                              <div>
+                                <p>Order is Delivered</p>
+                              </div>
+                            ) : (
+                              <section>
+                                Change Order Status
+                                <select
+                                  value={selectedStatus}
+                                  onChange={(event) =>
+                                    handleStatusChange(event, item.order_id)
+                                  }
+                                >
+                                  <option value="">Select Status</option>
+                                  <option value="WITH_RESTAURANT">
+                                    WITH RESTAURANT
+                                  </option>
+                                  <option value="OTW">Out for Delivery</option>
+                                  <option value="DELIVERED">Delivered</option>
+                                </select>
+                              </section>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               ) : null}
             </div>
