@@ -6,17 +6,14 @@ import validateForm from "../../components/validateForm";
 const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
   const [editForm, setEditForm] = useState(false);
   const [formValue, setFormValue] = useState({
-    id: "",
-    email: [],
+    partner_id: "",
+    user_id: "",
     first_name: "",
-    last_name: "",
-    house_number: "",
-    street_name: "",
-    dob: "",
+    last_name: "",    
+    status: "",
     city: "",
-    state: "",
-    pincode: "",
-    number: [],
+    vehicle_number: "",
+    phone_number: "",
   });
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -30,7 +27,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
   const [kitchenList, setKitchenList] = useState([]);
   const [orderList, setOrderList] = useState([]);
   const navigate = useNavigate();
-  const validate = validateForm("profile");
+  const validate = validateForm("partner_dashboard");
   const toggleForm = () => {
     setEditForm(!editForm);
   };
@@ -54,7 +51,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       redirect: "follow",
     };
 
-    fetch("http://localhost:8080/customer/", requestOptions)
+    fetch("http://localhost:8080/partner/profile", requestOptions)
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
@@ -67,25 +64,19 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       })
       .then((data) => {
         console.log("data");
-        console.log(data);
-        console.log(data.city);
-        setCustomerCity(data.city);
+        
         setProfileData(data);
         setFormValue({
-          id: data.id,
-          email: [data.email[0].email],
+          partner_id: data.partner_id,
+          user_id: data.user_id,
           first_name: data.first_name,
           last_name: data.last_name,
-          house_number: data.house_number,
-          street_name: data.street_name,
-          dob: data.dob,
+          status: data.status,
           city: data.city,
-          state: data.state,
-          pincode: data.pincode,
-          number: [data.phone_no[0].phone_no],
+          vehicle_number: data.vehicle_number,
+          phone_number: data.phone_number,
         });
-        setEmail(data.email[0].email);
-        setPhone_no(data.phone_no[0].phone_no);
+        
       });
   }, []);
 
@@ -140,10 +131,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       redirect: "follow",
     };
 
-    fetch(
-      `http://localhost:8080/order`,
-      newRequestOptions
-    )
+    fetch(`http://localhost:8080/order`, newRequestOptions)
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
@@ -252,74 +240,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       ) : editForm ? (
         <form className="profile-form" onSubmit={handleSubmit}>
           <hr />
-          {/* <section className="profile-information-section">
-            <label htmlFor="email">Email</label>
-            <input
-              name="email"
-              type="text"
-              value={formValue.email}
-              placeholder={currentUser.email}
-              onChange={handleValidation}
-            />
-          </section>
-          <span className="input-validation-error">{formErrors.email}</span>
-          <hr />
-          <section className="profile-information-section">
-            <label htmlFor="password">Password</label>
-            <input
-              name="password"
-              type="password"
-              value={formValue.password}
-              placeholder="********"
-              onChange={handleValidation}
-            />
-          </section>
-          <span className="input-validation-error">{formErrors.password}</span>
-          <hr />
-          <section className="profile-information-section">
-            <label htmlFor="fullname">Fullname</label>
-            <input
-              name="fullname"
-              type="text"
-              value={formValue.fullname}
-              placeholder={currentUser.fullname}
-              onChange={handleValidation}
-            />
-          </section>
-          <span className="input-validation-error">{formErrors.fullname}</span>
-          <hr />
-          <section className="profile-information-section">
-            <label htmlFor="address">Address</label>
-            <input
-              name="address"
-              type="text"
-              value={formValue.address}
-              placeholder={
-                currentUser.address !== null
-                  ? currentUser.address
-                  : "Add address..."
-              }
-              onChange={handleValidation}
-            />
-          </section>
-          <span className="input-validation-error">{formErrors.address}</span>
-          <hr />
-          <section className="profile-information-section">
-            <label htmlFor="number">Number</label>
-            <input
-              name="number"
-              type="text"
-              value={formValue.number}
-              placeholder={
-                currentUser.number !== null
-                  ? currentUser.number
-                  : "Add number..."
-              }
-              onChange={handleValidation}
-            />
-          </section>
-          <span className="input-validation-error">{formErrors.number}</span>
-          <hr /> */}
+          
           <section className="name-section">
             <input
               type="text"
@@ -344,42 +265,8 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
               {formErrors.last_name}
             </span>
           </section>
-
-          {/* <section className="email-section">
-            <input
-              type="text"
-              placeholder="Email"
-              name="email"
-              value={formValue.email}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">{formErrors.email}</span>
-          </section> */}
-
-          <section className="birthday">
-            <input
-              type="text"
-              placeholder="House No"
-              name="house_number"
-              value={formValue.house_number}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">
-              {formErrors.house_number}
-            </span>
-          </section>
-          <section className="birthday">
-            <input
-              type="text"
-              placeholder="Street Name"
-              name="street_name"
-              value={formValue.street_name}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">
-              {formErrors.street_name}
-            </span>
-          </section>
+          
+         
           <section className="birthday">
             <input
               type="text"
@@ -390,36 +277,18 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
             />
             <span className="registration-input-err">{formErrors.city}</span>
           </section>
+          
           <section className="birthday">
             <input
               type="text"
-              placeholder="State"
-              name="state"
-              value={formValue.state}
+              placeholder="Vehicle Number"
+              name="vehicle_number"
+              value={formValue.vehicle_number}
               onChange={handleValidation}
             />
-            <span className="registration-input-err">{formErrors.state}</span>
+            <span className="registration-input-err">{formErrors.vehicle_number}</span>
           </section>
-          <section className="birthday">
-            <input
-              type="text"
-              placeholder="Pincode"
-              name="pincode"
-              value={formValue.pincode}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">{formErrors.pincode}</span>
-          </section>
-          {/* <section className="birthday">
-            <input
-              type="text"
-              placeholder="Phone Number"
-              name="number"
-              value={formValue.number}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">{formErrors.number}</span>
-          </section> */}
+
           <section className="profile-buttons">
             <button
               type="button"
@@ -518,20 +387,24 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
               {viewOrder ? "Hide" : "View"}
             </button>
             <div>
-              
               {viewOrder ? (
                 <div>
-                  
                   <ul className="kitchen-list-item">
                     {orderList.map((item) => (
                       <li key={item.order_id} className="kitchen-list-item-3">
                         <p>Order Details:</p>
                         <p>Order ID: {item.order_id}</p>
                         <p>
-                          Delivering From Kitchen Address: {item.kitchen.street_name} {item.kitchen.plot} {item.kitchen.city}{" "}
-                          {item.kitchen.state}{item.kitchen.pincode}{" "}
+                          Delivering From Kitchen Address:{" "}
+                          {item.kitchen.street_name} {item.kitchen.plot}{" "}
+                          {item.kitchen.city} {item.kitchen.state}
+                          {item.kitchen.pincode}{" "}
                         </p>
-                        <p>Your Delivery Partner Details: {item.partner.first_name} {item.partner.last_name} Phone:{item.partner.phone_number}</p>
+                        <p>
+                          Your Delivery Partner Details:{" "}
+                          {item.partner.first_name} {item.partner.last_name}{" "}
+                          Phone:{item.partner.phone_number}
+                        </p>
                         <p>Order Total: {item.total_amount}</p>
                         <p>Status: {item.delivery_status}</p>
                       </li>
@@ -567,7 +440,6 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
                 </div>
               ) : null}
             </div>
-            
           </section>
         </React.Fragment>
       )}

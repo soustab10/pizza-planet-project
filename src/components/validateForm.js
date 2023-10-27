@@ -68,7 +68,7 @@ const validateForm = (form) => (value) => {
             errors.password = "Passwords don't match"
         }
     }
-    else if (form === "delivery_registration") {
+    else if (form === "partner_dashboard") {
         if (!value.first_name) {
             errors.first_name = "Please enter First name"
         }
@@ -80,49 +80,22 @@ const validateForm = (form) => (value) => {
         }
         else if (value.last_name.length < 3) {
             errors.last_name = "Name is too short"
-        }
-        if (!value.email) {
-            errors.email = "Please enter email"
-        }
-        else if (!emailRegex.test(value.email)) {
-            errors.email = "Please enter valid email"
-        }
-        // else if (!vehicleRegex.test(value.vehicle_number)) {
-        //     errors.vehicle = "Please enter valid Vehicle Number"
-        // }
-        if (!value.username) {
-            errors.username = "Please enter username"
-        }
-        
-        if (!value.house_number) {
-            errors.house_number = "Please enter House Number"
-        }
-        
-        if (!value.street_name) {
-            errors.street_name = "Please enter Street Name"
-        }
+        }       
         
         if (!value.city) {
             errors.city = "Please enter City"
         }
-        
-        if (!value.state) {
-            errors.state = "Please enter State"
+
+        if(!value.phone_number){
+            errors.phone_number = "Please enter Phone Number"
+        }
+
+        if(!value.vehicle_number){
+            errors.vehicle_number = "Please enter Vehicle Number"
         }
         
-        if (!value.pincode) {
-            errors.pincode = "Please enter Pincode"
-        }
-       
-        if (!value.password) {
-            errors.password = "Please enter a valid password"
-        }
-        if (!value.repeatPassword) {
-            errors.repeatPassword = "Please repeat the password"
-        }
-        if (value.password !== value.repeatPassword) {
-            errors.password = "Passwords don't match"
-        }
+        
+        
     }
 
     else if (form === "profile") {
