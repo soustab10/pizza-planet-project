@@ -26,7 +26,9 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
   const [phone_no, setPhone_no] = useState("");
   const [customerCity, setCustomerCity] = useState("");
   const [viewKitchen, setViewKitchen] = useState(false);
+  const [viewOrder, setViewOrder] = useState(false);
   const [kitchenList, setKitchenList] = useState([]);
+  const [orderList, setOrderList] = useState([]);
   const navigate = useNavigate();
   const validate = validateForm("profile");
   const toggleForm = () => {
@@ -121,6 +123,41 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
         console.log("data");
         console.log(data);
         setKitchenList(data);
+      });
+  };
+  const viewOrders = async (e) => {
+    e.preventDefault();
+    setViewOrder(!viewOrder);
+    console.log("getting orders");
+    const userToken = sessionStorage.getItem("token");
+    console.log(userToken);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
+    var newRequestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      `http://localhost:8080/order`,
+      newRequestOptions
+    )
+      .then((response) => {
+        console.log(response.status);
+        if (response.status === 403) {
+          window.alert("Please login with credentials!");
+        }
+        if (!response.ok) {
+          throw new Error("Username and password do not match.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("data");
+        console.log(data);
+        setOrderList(data);
       });
   };
 
@@ -472,6 +509,39 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
             </button>
           </section>
           <section className="kitchen-list">
+            <p className="kitchen-title">View Orders:</p>
+            <button
+              onClick={viewOrders}
+              className="active-button-style kitchen-view-btn"
+            >
+              {" "}
+              {viewOrder ? "Hide" : "View"}
+            </button>
+            <div>
+              
+              {viewOrder ? (
+                <div>
+                  
+                  <ul className="kitchen-list-item">
+                    {orderList.map((item) => (
+                      <li key={item.order_id} className="kitchen-list-item-3">
+                        <p>Order Details:</p>
+                        <p>Order ID: {item.order_id}</p>
+                        <p>
+                          Delivering From Kitchen Address: {item.kitchen.street_name} {item.kitchen.plot} {item.kitchen.city}{" "}
+                          {item.kitchen.state}{item.kitchen.pincode}{" "}
+                        </p>
+                        <p>Your Delivery Partner Details: {item.partner.first_name} {item.partner.last_name} Phone:{item.partner.phone_number}</p>
+                        <p>Order Total: {item.total_amount}</p>
+                        <p>Status: {item.delivery_status}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+          </section>
+          <section className="kitchen-list">
             <p className="kitchen-title">Kitchens in your City:</p>
             <button
               onClick={viewKitchens}
@@ -497,6 +567,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
                 </div>
               ) : null}
             </div>
+            
           </section>
         </React.Fragment>
       )}

@@ -373,6 +373,12 @@ input:focus-visible {
   gap: 3rem;
   width: 100%;
 }
+.kitchen-list-item-3 {
+  color: var(--white);
+  font-family: var(--poppins-font);
+  font-size: 1rem;
+
+}
   @media screen and (min-width: 700px) {
     .registration-form {
       width: 70%;

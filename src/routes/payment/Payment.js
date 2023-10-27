@@ -33,6 +33,7 @@ const Payment = ({ cartItems, totalPayment }) => {
     const userToken = sessionStorage.getItem("token");
     console.log(userToken);
     const transacId = `${timeStamp}`;
+    setTransactionId(transacId);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${userToken}`);
@@ -93,21 +94,21 @@ const Payment = ({ cartItems, totalPayment }) => {
             </section>
             <img src={Tick} alt="" aria-hidden="true" />
             <section className="payment-details">
-              <p>
+              {/* <p>
                 Amount paid: <span>{totalPayment} $</span>
-              </p>
+              </p> */}
               <p>
                 Transaction id: <span>{transactionId}</span>
               </p>
-              <h3>Est. delivery time: 24mins.</h3>
+             
             </section>
             <section className="success-payment-redirection">
               <Link
                 className="active-button-style"
-                to="/order"
+                to="/profile"
                 onClick={ResetLocation}
               >
-                Track my order
+                Visit Profile to Track your Orders
               </Link>
               <Link to="/menu" onClick={ResetLocation}>
                 Order something else
