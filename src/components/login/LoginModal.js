@@ -10,6 +10,8 @@ import api from "../../api";
 const LoginModal = ({
   setLoginModalWindow,
   setValidLogin,
+  setRole,
+  role,
   loginModalWindow,
   hideMenu,
   validLogin,
@@ -62,13 +64,17 @@ const LoginModal = ({
       })
       .then((data) => {
         console.log(2);
+        
         const token = data.token;
+        const role = data.role;
         if(token.length === 0){
           throw new Error("Username and password do not match.");
         }
         // Store the token in localStorage
         sessionStorage.setItem("token", token);
+        sessionStorage.setItem("role", role);
         setValidLogin(true);
+        setRole(role);
         // Redirect to the home page
         window.location.href = "/";
       })

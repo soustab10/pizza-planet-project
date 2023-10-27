@@ -9,5 +9,7 @@ import Register from './registration/Register';
 import RegisterPartner from './registerpartner/RegisterPartner';
 import RegisterKitchen from './registerkitchen/RegisterKitchen';
 import SingleItem from './single-item/SingleItem';
+import PartnerLogin from './partnerlogin/PartnerLogin';
+import PartnerDashboard from './partnerDashboard/PartnerDashboard';
 
-export { About, Cart, Checkout, RootSection, Menu, Payment, Register, RegisterPartner,RegisterKitchen, SingleItem };
+export { About, Cart, Checkout, RootSection, Menu, Payment, Register, RegisterPartner,RegisterKitchen,PartnerLogin, SingleItem,PartnerDashboard };

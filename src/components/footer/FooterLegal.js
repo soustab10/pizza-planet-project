@@ -26,6 +26,23 @@ export default class FooterLegal extends React.Component {
                         Terms
                     </NavLink>
                 </li>
+                <li>
+                    <NavLink
+                        style={({ isActive }) =>
+                            isActive
+                                ? {
+                                    textDecoration: "none",
+                                    color: "#ff6240",
+                                }
+                                : {}
+                        }
+                        onClick={ResetLocation}
+                        className="txt-white"
+                        to="/partnerlogin"
+                    >
+                        Partner Login
+                    </NavLink>
+                </li>
 
             </ul>
         );

@@ -130,7 +130,7 @@ const Register = ({ activateLoginModal }) => {
     const { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value });
   };
-  const validate = validateForm("registration");
+  const validate = validateForm("delivery_registration");
 
   useEffect(() => {
     document.title = "Registration | Pizza Planet";
@@ -178,7 +178,7 @@ const Register = ({ activateLoginModal }) => {
               type="text"
               placeholder="First name"
               name="first_name"
-              value={formValue.first_name}
+              value={formValue.first_name} 
               onChange={handleValidation}
             />
             <span className="registration-input-err">

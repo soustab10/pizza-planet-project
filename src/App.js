@@ -12,7 +12,9 @@ import {
   Register,
   RegisterPartner,
   RegisterKitchen,
+  PartnerLogin,
   SingleItem,
+  PartnerDashboard,
 } from "./routes/index";
 
 import { AllCategories } from "./data/AllCategories";
@@ -35,6 +37,9 @@ function App() {
   const [totalPayment, setTotalPayment] = useState(0);
   const [taxes, setTaxes] = useState(0);
   const [validLogin, setValidLogin] = useState(false);
+  const [role, setRole] = useState(0);
+  const [validPartnerLogin, setValidPartnerLogin] = useState(false);
+  
   const [isModalActive, setIsModalActive] = useState(false);
   const [loginModalWindow, setLoginModalWindow] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -170,6 +175,9 @@ function App() {
     }
     if (sessionStorage.getItem("validLogin") !== null) {
       setValidLogin(sessionStorage.getItem("validLogin"));
+    }
+    if (sessionStorage.getItem("role") !== null) {
+      setRole(sessionStorage.getItem("role"));
     }
   }, [validLogin]);
 
@@ -455,7 +463,9 @@ function App() {
         loginModal={
           <LoginModal
             validLogin={validLogin}
+            role = {role}
             setValidLogin={setValidLogin}
+            setRole = {setRole}
             setLoginModalWindow={setLoginModalWindow}
             loginModalWindow={loginModalWindow}
             hideMenu={hideMenu}
@@ -469,6 +479,7 @@ function App() {
         hideMenu={hideMenu}
         handleLogout={handleLogout}
         validLogin={validLogin}
+        role = {role}
         productsQuantity={productsQuantity}
       />
       <Routes>
@@ -538,6 +549,16 @@ function App() {
           }
         />
         <Route
+          path="/partnerlogin"
+          element={
+            validLogin ? (
+              <NotFound />
+            ) : (
+              <PartnerLogin activateLoginModal={activateLoginModal} />
+            )
+          }
+        />
+        <Route
           path="/registerpartner"
           element={
             validLogin ? (
@@ -554,6 +575,21 @@ function App() {
               <NotFound />
             ) : (
               <Profile
+                currentUser={currentUser}
+                getUser={getUser}
+                handleLogout={handleLogout}
+                updateUser={updateUser}
+              />
+            )
+          }
+        />
+        <Route
+          path="/partnerdashboard"
+          element={
+            !validLogin ? (
+              <NotFound />
+            ) : (
+              <PartnerDashboard
                 currentUser={currentUser}
                 getUser={getUser}
                 handleLogout={handleLogout}

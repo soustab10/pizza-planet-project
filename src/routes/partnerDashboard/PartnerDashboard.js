@@ -3,7 +3,7 @@ import ResetLocation from "../../helpers/ResetLocation";
 import { useNavigate } from "react-router-dom";
 import validateForm from "../../components/validateForm";
 
-const Profile = ({ currentUser, handleLogout, updateUser }) => {
+const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
   const [editForm, setEditForm] = useState(false);
   const [formValue, setFormValue] = useState({
     id: "",
@@ -41,7 +41,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
   };
 
   useEffect(() => {
-    document.title = "Profile | Pizza Planet";
+    document.title = "Partner Dashboard | Pizza Planet";
     const userToken = sessionStorage.getItem("token");
     console.log(userToken);
     var myHeaders = new Headers();
@@ -140,7 +140,10 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
       redirect: "follow",
     };
 
-    fetch(`http://localhost:8080/order`, newRequestOptions)
+    fetch(
+      `http://localhost:8080/order`,
+      newRequestOptions
+    )
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
@@ -236,7 +239,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
 
   return (
     <main className="profile">
-      <h2>Profile information</h2>
+      <h2>Partner information</h2>
       <p>Personal details and application</p>
       {loading ? (
         <div role="status" className="loader">
@@ -515,33 +518,27 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
               {viewOrder ? "Hide" : "View"}
             </button>
             <div>
+              
               {viewOrder ? (
                 <div>
+                  
                   <ul className="kitchen-list-item">
                     {orderList.map((item) => (
                       <li key={item.order_id} className="kitchen-list-item-3">
                         <p>Order Details:</p>
                         <p>Order ID: {item.order_id}</p>
                         <p>
-                          Delivering From Kitchen Address:{" "}
-                          {item.kitchen.street_name} {item.kitchen.plot}{" "}
-                          {item.kitchen.city} {item.kitchen.state}
-                          {item.kitchen.pincode}{" "}
+                          Delivering From Kitchen Address: {item.kitchen.street_name} {item.kitchen.plot} {item.kitchen.city}{" "}
+                          {item.kitchen.state}{item.kitchen.pincode}{" "}
                         </p>
-                        <p>
-                          Your Delivery Partner Details:{" "}
-                          {item.partner.first_name} {item.partner.last_name}{" "}
-                          Phone:{item.partner.phone_number}
-                        </p>
+                        <p>Your Delivery Partner Details: {item.partner.first_name} {item.partner.last_name} Phone:{item.partner.phone_number}</p>
                         <p>Order Total: {item.total_amount}</p>
                         <p>Status: {item.delivery_status}</p>
                       </li>
                     ))}
                   </ul>
                 </div>
-              ) : (
-                <p>No Orders to Show!</p>
-              )}
+              ) : null}
             </div>
           </section>
           <section className="kitchen-list">
@@ -570,6 +567,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
                 </div>
               ) : null}
             </div>
+            
           </section>
         </React.Fragment>
       )}
@@ -607,4 +605,4 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
   );
 };
 
-export default Profile;
+export default PartnerDashboard;
