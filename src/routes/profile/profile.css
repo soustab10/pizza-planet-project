@@ -20,7 +20,7 @@
     color: var(--white);
     font-family: var(--poppins-font);
     text-align: center;
-    font-size: 1.5rem;
+    /* font-size: 1.5rem; */
 }
 
 .profile-information {
@@ -332,6 +332,47 @@ input:focus-visible {
     text-align: center;
     padding: 2rem;
   }
+  .kitchen-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 3rem;
+    align-items: flex-start;
+    width: 90%;
+    padding: 1rem;
+  }
+  .kitchen-title {
+    color: var(--white);
+    font-family: var(--poppins-font);
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}
+
+.kitchen-view-btn {
+  align-self: center;
+}
+
+.kitchen-list-item {
+  color: var(--white);
+  font-family: var(--poppins-font);
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  gap: 3rem;
+  width: 100%;
+}
+.kitchen-list-item-2 {
+  color: var(--white);
+  font-family: var(--poppins-font);
+  font-size: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 3rem;
+  width: 100%;
+}
   @media screen and (min-width: 700px) {
     .registration-form {
       width: 70%;

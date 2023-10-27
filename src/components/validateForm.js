@@ -69,24 +69,45 @@ const validateForm = (form) => (value) => {
         }
     }
     else if (form === "profile") {
-        if (value.fullname.length !== 0 && value.fullname.length < 3) {
-            errors.fullname = "Full name is too short"
+        if (!value.first_name) {
+            errors.first_name = "Please enter First Name"
         }
-        if (value.address.length !== 0 && value.address.length < 5) {
-            errors.address = "Address is too short"
+        else if (value.first_name.length !== 0 && value.first_name.length < 3) {
+            errors.first_name = "First name is too short"
         }
-        if (value.email.length !== 0 && !emailRegex.test(value.email)) {
-            errors.email = "Please enter valid email"
+        if (!value.last_name) {
+            errors.last_name = "Please enter First Name"
         }
-        if (value.password.length !== 0 && value.password.length < 8) {
-            errors.password = "Password should be min. 8 characters"
+        else if (value.last_name.length !== 0 && value.last_name.length < 3) {
+            errors.last_name = "First name is too short"
         }
-        if (value.number.length !== 0 && value.number.length < 5) {
-            errors.number = "Phone number is not valid"
+        
+        // if (!value.email) {
+        //     errors.email = "Please enter Email"
+        // }
+        // if (value.email.length !== 0 && !emailRegex.test(value.email)) {
+        //     errors.email = "Please enter valid email"
+        // }
+        if (!value.house_number) {
+            errors.house_number = "Please enter House Number"
         }
-        else if (value.number.length !== 0 && !numberRegex.test(value.number)) {
-            errors.number = "Phone number is not valid"
+        if (!value.street_name) {
+            errors.street_name = "Please enter Street Name"
         }
+        if (!value.city) {
+            errors.city = "Please enter City"
+        }
+        if (!value.state) {
+            errors.state = "Please enter State"
+        }
+        if (!value.pincode) {
+            errors.pincode = "Please enter Pincode"
+        }
+        // if(!value.number){
+        //     errors.number = "Please enter Phone Number"
+        // }
+        
+        
     }
     else if (form === "login") {
         if (!value.email) {

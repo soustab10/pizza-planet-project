@@ -8,8 +8,6 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
   const [formValue, setFormValue] = useState({
     id: "",
     email: [],
-    password: "",
-    repeatPassword: "",
     first_name: "",
     last_name: "",
     house_number: "",
@@ -18,14 +16,17 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
     city: "",
     state: "",
     pincode: "",
-    number: "",
+    number: [],
   });
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [profileData, setProfileData] = useState({});
-  const [email,setEmail]=useState("")
-  const[phone_no,setPhone_no]=useState("")
+  const [email, setEmail] = useState("");
+  const [phone_no, setPhone_no] = useState("");
+  const [customerCity, setCustomerCity] = useState("");
+  const [viewKitchen, setViewKitchen] = useState(false);
+  const [kitchenList, setKitchenList] = useState([]);
   const navigate = useNavigate();
   const validate = validateForm("profile");
   const toggleForm = () => {
@@ -36,7 +37,6 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
     const { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value });
   };
-
 
   useEffect(() => {
     document.title = "Profile | Pizza Planet";
@@ -64,13 +64,14 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
         return response.json();
       })
       .then((data) => {
+        console.log("data");
         console.log(data);
+        console.log(data.city);
+        setCustomerCity(data.city);
         setProfileData(data);
         setFormValue({
           id: data.id,
-          email: data.email[0].email,
-          password: "",
-          repeatPassword: "",
+          email: [data.email[0].email],
           first_name: data.first_name,
           last_name: data.last_name,
           house_number: data.house_number,
@@ -79,12 +80,49 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
           city: data.city,
           state: data.state,
           pincode: data.pincode,
-          number: data.phone_no[0].phone_no,
+          number: [data.phone_no[0].phone_no],
         });
-        setEmail(data.email[0].email)
-        setPhone_no(data.phone_no[0].phone_no)
+        setEmail(data.email[0].email);
+        setPhone_no(data.phone_no[0].phone_no);
       });
   }, []);
+
+  const viewKitchens = async (e) => {
+    e.preventDefault();
+    setViewKitchen(!viewKitchen);
+    console.log("getting cities");
+    console.log(customerCity);
+    const userToken = sessionStorage.getItem("token");
+    console.log(userToken);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
+    var newRequestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      `http://localhost:8080/kitchen/getByCity/${customerCity}`,
+      newRequestOptions
+    )
+      .then((response) => {
+        console.log(response.status);
+        if (response.status === 403) {
+          window.alert("Please login with credentials!");
+        }
+        if (!response.ok) {
+          throw new Error("Username and password do not match.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("data");
+        console.log(data);
+        setKitchenList(data);
+      });
+  };
 
   const handleSubmit = async (e) => {
     console.log(formValue);
@@ -94,9 +132,6 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
       password: formValue.password,
       first_name: formValue.first_name,
       last_name: formValue.last_name,
-      email: [{ email: formValue.email }],
-      phone_no: [{ phone_number: formValue.number }],
-
       house_number: formValue.house_number,
       street_name: formValue.street_name,
       city: formValue.city,
@@ -104,29 +139,13 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
       pincode: formValue.pincode,
     };
     setLoading(true);
-    console.log(1);
-    e.preventDefault();
-    window.scrollTo(0, 0);
-    let currForm = { ...formValue };
-    currForm.email = currForm.email.toLowerCase();
-    console.log(1);
 
     const bodySend = JSON.stringify({ ...signupData });
     console.log(bodySend);
+    console.log(validate(formValue));
     if (Object.keys(validate(formValue)).length > 0) {
       setLoading(false);
       return;
-    } else {
-      let currForm = { ...formValue };
-      if (currForm.repeatPassword.length > 0) {
-        delete currForm.repeatPassword;
-      }
-      if (currForm.address !== undefined) {
-        delete currForm.address;
-      }
-      if (currForm.number !== undefined) {
-        delete currForm.number;
-      }
     }
 
     const userToken = sessionStorage.getItem("token");
@@ -137,20 +156,24 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
 
     var requestOptions = {
       method: "PUT",
+      body: bodySend,
       headers: myHeaders,
       redirect: "follow",
     };
 
-    fetch("http://localhost:8080/customer/update", requestOptions).then(
+    fetch(`http://localhost:8080/customer/update`, requestOptions).then(
       (response) => {
         console.log(response.status);
         if (response.status === 403) {
           window.alert("Please login with credentials!");
         }
         if (!response.ok) {
-          throw new Error("Username and password do not match.");
+          setLoading(false);
+          return;
         }
-        window.alert("User updated successfully.");
+        console.log(response);
+        setLoading(false);
+        window.alert("Profile Updated!");
         window.location.reload();
       }
     );
@@ -268,6 +291,9 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
               value={formValue.first_name}
               onChange={handleValidation}
             />
+            <span className="registration-input-err">
+              {formErrors.first_name}
+            </span>
           </section>
           <section className="name-section">
             <input
@@ -282,7 +308,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
             </span>
           </section>
 
-          <section className="email-section">
+          {/* <section className="email-section">
             <input
               type="text"
               placeholder="Email"
@@ -291,39 +317,8 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
               onChange={handleValidation}
             />
             <span className="registration-input-err">{formErrors.email}</span>
-          </section>
-          <section className="email-section">
-            <input
-              type="date"
-              placeholder="Date of Birth"
-              name="dob"
-              style={{ color: "#bfbfbf" }}
-              value={formValue.dob}
-              onChange={handleValidation}
-            />
-          </section>
-          <section className="password-section">
-            <input
-              type="password"
-              placeholder="New password"
-              name="password"
-              value={formValue.password}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">
-              {formErrors.password}
-            </span>
-            <input
-              type="password"
-              placeholder="Repeat password"
-              name="repeatPassword"
-              value={formValue.repeatPassword}
-              onChange={handleValidation}
-            />
-            <span className="registration-input-err">
-              {formErrors.repeatPassword}
-            </span>
-          </section>
+          </section> */}
+
           <section className="birthday">
             <input
               type="text"
@@ -378,7 +373,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
             />
             <span className="registration-input-err">{formErrors.pincode}</span>
           </section>
-          <section className="birthday">
+          {/* <section className="birthday">
             <input
               type="text"
               placeholder="Phone Number"
@@ -387,7 +382,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
               onChange={handleValidation}
             />
             <span className="registration-input-err">{formErrors.number}</span>
-          </section>
+          </section> */}
           <section className="profile-buttons">
             <button
               type="button"
@@ -408,16 +403,10 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
             <hr />
             <section className="profile-information-section">
               <h3>Email</h3>
-              <p value={email}>
-              {email}
-              </p>
+              <p value={email}>{email}</p>
             </section>
             <hr />
-            <section className="profile-information-section">
-              <h3>Password</h3>
-              <p>*********</p>
-            </section>
-            <hr />
+
             <section className="profile-information-section">
               <h3>Fullname</h3>
               <p>
@@ -481,6 +470,33 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
             >
               Delete account
             </button>
+          </section>
+          <section className="kitchen-list">
+            <p className="kitchen-title">Kitchens in your City:</p>
+            <button
+              onClick={viewKitchens}
+              className="active-button-style kitchen-view-btn"
+            >
+              {" "}
+              {viewKitchen ? "Hide" : "View"}
+            </button>
+            <div>
+              {viewKitchen ? (
+                <div>
+                  <ul className="kitchen-list-item">
+                    {kitchenList.map((item) => (
+                      <li key={item.kitchen_id} className="kitchen-list-item-2">
+                        <p>Kitchen {item.kitchen_id}</p>
+                        <p>
+                          Address: {item.street_name} {item.plot} {item.city}{" "}
+                          {item.state}{" "}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
           </section>
         </React.Fragment>
       )}

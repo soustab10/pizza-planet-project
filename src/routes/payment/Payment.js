@@ -39,7 +39,7 @@ const Payment = ({ cartItems, totalPayment }) => {
     console.log(transacId);
     console.log(typeof transacId);
     var dataSend = JSON.stringify({
-      transaction_id: "123456abcdddgdf",
+      transaction_id: transacId,
     });
 
     var requestOptions = {
