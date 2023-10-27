@@ -29,7 +29,7 @@ const WelcomeSection = () => {
           transition={{ duration: 5 }}
         />
         <h2 className="txt-white">
-          Welcome to <span>Pizza Planet</span> restaurant
+          Welcome to<br/> <span>Pizza Planet</span> 
         </h2>
         <p>
         Pizza Planet is a renowned pizza restaurant chain dedicated to delivering the ultimate pizza experience. With a passion for crafting the perfect pizzas, we offer a delectable selection of hand-tossed, oven-baked creations. Our commitment to quality ingredients, a variety of mouthwatering toppings, and a commitment to taste perfection ensures that every slice is a journey through flavor. Whether you're a fan of classic favorites or crave adventurous combinations, Pizza Planet is your go-to destination for savoring the finest, freshly made pizzas. Come and enjoy the taste of perfection at Pizza Planet, where every pizza is a slice of culinary excellence.

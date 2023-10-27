@@ -1,9 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100&family=Nothing+You+Could+Do&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Agbalumo&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nabla:EDPT,EHLT@30..200,24&display=swap");
+
 :root {
   --poppins-font: "Poppins", sans-serif;
-  --josefin-font: "Sansita Swashed", cursive;
+  --josefin-font: "Nabla";
   --nothing-font: "Nothing You Could Do", cursive;
   --white: #ffffff;
   --light-gray: #919191;
@@ -158,7 +161,7 @@ header {
   height: 3rem;
 }
 .logo {
-  width: 4rem;
+  width: 8rem;
   height: auto;
   max-width: 70%;
   transition: all ease-in-out 0.2s;
@@ -173,6 +176,8 @@ header {
   display: block;
   color: var(--pizza-yellow);
 }
+
+
 
 /* NAVIGATION MENU */
 .navigation-menu {
@@ -216,7 +221,7 @@ header {
 
 .header-info span {
   color: var(--pizza-red);
-  font-family: var(--nothing-font);
+  font-family: var(--josefin-font);
   font-size: 2rem;
 }
 
@@ -303,12 +308,12 @@ header {
 }
 .section-2-info h2 {
   text-transform: uppercase;
-  font-size: 2.5rem;
+  font-size: 4rem;
   font-weight: 400;
 }
 
 .section-2-info h2 span {
-  font-family: var(--nothing-font);
+  font-family: var(--josefin-font);
   color: var(--yellow);
 }
 

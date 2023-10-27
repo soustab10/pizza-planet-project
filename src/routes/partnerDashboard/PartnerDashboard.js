@@ -9,7 +9,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
     partner_id: "",
     user_id: "",
     first_name: "",
-    last_name: "",    
+    last_name: "",
     status: "",
     city: "",
     vehicle_number: "",
@@ -63,8 +63,8 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
         return response.json();
       })
       .then((data) => {
-        console.log("data");
-        
+        console.log(data);
+
         setProfileData(data);
         setFormValue({
           partner_id: data.partner_id,
@@ -76,7 +76,6 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
           vehicle_number: data.vehicle_number,
           phone_number: data.phone_number,
         });
-        
       });
   }, []);
 
@@ -97,7 +96,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
     };
 
     fetch(
-      `http://localhost:8080/kitchen/getByCity/${customerCity}`,
+      `http://localhost:8080/kitchen/getByCity/${profileData.city}`,
       newRequestOptions
     )
       .then((response) => {
@@ -153,15 +152,14 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
     console.log(formValue);
 
     const signupData = {
-      username: formValue.username,
-      password: formValue.password,
+      partner_id: formValue.partner_id,
+      user_id: formValue.user_id,
       first_name: formValue.first_name,
       last_name: formValue.last_name,
-      house_number: formValue.house_number,
-      street_name: formValue.street_name,
       city: formValue.city,
-      state: formValue.state,
-      pincode: formValue.pincode,
+      vehicle_number: formValue.vehicle_number,
+      phone_number: formValue.phone_number,
+      formValue: formValue.status,
     };
     setLoading(true);
 
@@ -186,7 +184,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       redirect: "follow",
     };
 
-    fetch(`http://localhost:8080/customer/update`, requestOptions).then(
+    fetch(`http://localhost:8080/partner/update`, requestOptions).then(
       (response) => {
         console.log(response.status);
         if (response.status === 403) {
@@ -204,27 +202,8 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
     );
   };
 
-  const confirmDeleteUser = () => {
-    ResetLocation();
-    setConfirmationModal(true);
-  };
 
-  const deleteUser = async (id) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_USERS_URL}/${id}`, {
-        method: "DELETE",
-      });
-      if (response.status === 200) {
-        navigate("/");
-        handleLogout();
-        return true;
-      }
-    } catch (err) {
-      console.log(err.message);
-      return false;
-    }
-  };
-
+ 
   return (
     <main className="profile">
       <h2>Partner information</h2>
@@ -240,7 +219,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       ) : editForm ? (
         <form className="profile-form" onSubmit={handleSubmit}>
           <hr />
-          
+
           <section className="name-section">
             <input
               type="text"
@@ -265,8 +244,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
               {formErrors.last_name}
             </span>
           </section>
-          
-         
+
           <section className="birthday">
             <input
               type="text"
@@ -277,7 +255,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
             />
             <span className="registration-input-err">{formErrors.city}</span>
           </section>
-          
+
           <section className="birthday">
             <input
               type="text"
@@ -286,7 +264,9 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
               value={formValue.vehicle_number}
               onChange={handleValidation}
             />
-            <span className="registration-input-err">{formErrors.vehicle_number}</span>
+            <span className="registration-input-err">
+              {formErrors.vehicle_number}
+            </span>
           </section>
 
           <section className="profile-buttons">
@@ -308,8 +288,8 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
           <article className="profile-information">
             <hr />
             <section className="profile-information-section">
-              <h3>Email</h3>
-              <p value={email}>{email}</p>
+              <h3>Vehicle Number</h3>
+              <p value={email}>{profileData.vehicle_number}</p>
             </section>
             <hr />
 
@@ -321,31 +301,11 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
             </section>
             <hr />
             <section className="profile-information-section">
-              <h3>Address</h3>
+              <h3>City</h3>
 
               <p>
-                {profileData.house_number !== null ? (
-                  <p>{profileData.house_number}</p>
-                ) : (
-                  <p></p>
-                )}
-                {profileData.street_name !== null ? (
-                  <p>{profileData.street_name}</p>
-                ) : (
-                  <p></p>
-                )}
                 {profileData.city !== null ? (
                   <p>{profileData.city}</p>
-                ) : (
-                  <p></p>
-                )}
-                {profileData.state !== null ? (
-                  <p>{profileData.state}</p>
-                ) : (
-                  <p></p>
-                )}
-                {profileData.pincode !== null ? (
-                  <p>{profileData.pincode}</p>
                 ) : (
                   <p></p>
                 )}
@@ -354,7 +314,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
             <hr />
             <section className="profile-information-section">
               <h3>Contact Number</h3>
-              {phone_no}
+              {profileData.phone_number}
             </section>
             <hr />
           </article>
@@ -369,13 +329,13 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
             >
               Edit profile
             </button>
-            <button
+            {/* <button
               type="button"
               className="passive-button-style"
               onClick={() => confirmDeleteUser()}
             >
               Delete account
-            </button>
+            </button> */}
           </section>
           <section className="kitchen-list">
             <p className="kitchen-title">View Orders:</p>
@@ -443,36 +403,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
           </section>
         </React.Fragment>
       )}
-      {confirmationModal ? (
-        <section className="deletion-modal">
-          <section className="deletion-window">
-            <h3>Delete account</h3>
-            <p>
-              Are you sure you want to delete your account? This action cannot
-              be reversed and all the data will be lost
-            </p>
-            <section>
-              <button
-                type="button"
-                className="confirm-deletion"
-                onClick={() => deleteUser(currentUser.id)}
-              >
-                Confirm
-              </button>
-              <button
-                type="button"
-                className="cancel-deletion"
-                onClick={() => {
-                  setConfirmationModal(false);
-                  ResetLocation();
-                }}
-              >
-                Cancel
-              </button>
-            </section>
-          </section>
-        </section>
-      ) : null}
+
     </main>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo2.png";
 import openMenu from "../../assets/images/open-menu.svg";
 import closeMenu from "../../assets/images/close-menu.svg";
 import { Link, NavLink } from "react-router-dom";
@@ -37,7 +37,7 @@ const Header = ({
             src={logo}
             alt="Pizza Planet logo"
           />
-          <h1>
+          <h1 className="header-name">
             Pizza <span>Planet</span>
           </h1>
         </NavLink>
