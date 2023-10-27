@@ -221,6 +221,7 @@ const Cart = () => {
                 </section>
               );
             })}
+            <section className="cart-footer">
             <button className="cart-clear-btn">
               remove all items from the cart
             </button>
@@ -229,7 +230,7 @@ const Cart = () => {
               Net Total: Rs.{" "}
               {cartData.reduce((acc, item) => acc + item.price, 0)}
             </section>
-            <section className="checkout-interaction-btns">
+            <section className="checkout-interaction-btns1">
               <Link to="/payment" className="active-button-style">
                 Proceed to payment
               </Link>
@@ -237,6 +238,8 @@ const Cart = () => {
                 Back to menu
               </Link>
             </section>
+            </section>
+            
           </React.Fragment>
         )}
       </article>
