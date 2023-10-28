@@ -7,11 +7,28 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Cart = () => {
   const [cartData, setCartData] = useState([]);
-
-  const notifyLogin = () => toast.warn("Login with your credentials to add to cart.");
-  const notifyError = () => toast.error("Something went wrong. Please try again.");
+  const [couponList, setCouponList] = useState([]);
+  const [cartTotal, setCartTotal] = useState(0);
+  const [filteredCoupons, setFilteredCoupons] = useState([]);
+  const notifyLogin = () =>
+    toast.warn("Login with your credentials to add to cart.");
+  const notifyError = () =>
+    toast.error("Something went wrong. Please try again.");
   const notifyCart = () => toast.success("Item deleted from cart.");
 
+  // Initialize the selected coupon with the first coupon (optional)
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
+
+  const handleCouponChange = (event) => {
+    const couponId = event.target.value;
+    console.log(couponId);
+    const sCoupon = couponList.find(
+      (coupon) => coupon.coupon_id.toString() === couponId.toString()
+    );
+    setSelectedCoupon(sCoupon);
+
+    sessionStorage.setItem("coupon_code", sCoupon.coupon_code);
+  };
   useEffect(() => {
     document.title = "Shopping Cart | Pizza Planet";
     const userToken = sessionStorage.getItem("token");
@@ -19,7 +36,7 @@ const Cart = () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${userToken}`);
-
+    var itemsTotal = 0;
     var requestOptions = {
       method: "GET",
       headers: myHeaders,
@@ -40,65 +57,40 @@ const Cart = () => {
       .then((data) => {
         console.log(data);
         setCartData(data);
+
+        setCartTotal(data.reduce((acc, item) => acc + item.price, 0));
+      });
+
+    fetch("http://localhost:8080/coupons", requestOptions)
+      .then((response) => {
+        console.log(response.status);
+        if (response.status === 403) {
+          notifyLogin();
+        }
+        if (!response.ok) {
+          notifyError();
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("coupon data");
+        console.log(data);
+        setCouponList(data);
+        console.log(itemsTotal);
       });
   }, []);
 
-
   const deleteCartItem = (cartItem) => {
     console.log("delete from cart");
-    // e.preventDefault();
-    // var myHeaders = new Headers();
-    // const userToken = sessionStorage.getItem("token");
-    // console.log(userToken);
-    // myHeaders.append("Content-Type", "application/json");
-    // myHeaders.append("Authorization", `Bearer ${userToken}`);
-    // const convertedToppings = selectedToppings.map((toppingId) => ({
-    //   topping_id: toppingId,
-    // }));
 
-    // var dataSend = JSON.stringify({
-    //   pizza: {
-    //     pizza_id: window.location.pathname.toString().substring(6),
-    //   },
-    //   quantity: quantity,
-    //   pizzaCrust: {
-    //     crust_id: selectedCrust,
-    //   },
-    //   pizzaSize: {
-    //     size_id: selectedSize,
-    //   },
-    //   toppings: convertedToppings,
-    // });
-
-    // console.log(dataSend);
-
-    // var requestOptions = {
-    //   method: "POST",
-    //   headers: myHeaders,
-    //   body: dataSend,
-    //   redirect: "follow",
-    // };
-
-    // fetch("http://localhost:8080/cart/add", requestOptions)
-    //   .then((response) => {
-    //     console.log(response.status);
-    //     if (response.status === 403) {
-    //       window.alert("Please login to add to cart");
-    //     }
-    //     if (!response.ok) {
-    //       throw new Error("Username and password do not match.");
-    //     }
-    //     return response.json();
-    //   })
-    //   .then((data) => {
-    //     console.log(data);
-    //   });
     const userToken = sessionStorage.getItem("token");
     console.log(userToken);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${userToken}`);
-    const convertedToppings = cartItem.toppings.map((item) => ({ topping_id: item.topping_id }));
+    const convertedToppings = cartItem.toppings.map((item) => ({
+      topping_id: item.topping_id,
+    }));
 
     var dataSend = JSON.stringify({
       cart_id: cartItem.cart_id,
@@ -132,7 +124,7 @@ const Cart = () => {
           notifyLogin();
         }
         if (!response.ok) {
-          console.log("error",response);
+          console.log("error", response);
         }
         // return response.json();
       })
@@ -149,8 +141,6 @@ const Cart = () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${userToken}`);
-    
-
 
     var requestOptions = {
       method: "POST",
@@ -163,9 +153,8 @@ const Cart = () => {
         console.log(response.status);
         if (response.status === 403) {
           notifyLogin();
-        }
-        else if (!response.ok) {
-          console.log("error",response);
+        } else if (!response.ok) {
+          console.log("error", response);
           notifyError();
         }
         // return response.json();
@@ -253,24 +242,52 @@ const Cart = () => {
               );
             })}
             <section className="cart-footer">
-            <button className="cart-clear-btn" onClick={clearCart}>
-              Clear Cart
-            </button>
+              <button className="cart-clear-btn" onClick={clearCart}>
+                Clear Cart
+              </button>
 
-            <section className="cart-totals">
-              Net Total: Rs.{" "}
-              {cartData.reduce((acc, item) => acc + item.price, 0)}
+              <div>
+                <select value={selectedCoupon} onChange={handleCouponChange}>
+                  <option value="">Select a Coupon</option>
+                  {couponList.map((coupon) => {
+                    if (coupon.activationPrice <= cartTotal) {
+                      return (
+                        <option key={coupon.coupon_id} value={coupon.coupon_id}>
+                          {coupon.coupon_code}: Discount Amount Rs.{" "}
+                          {coupon.discountPrice.toFixed(2)}
+                        </option>
+                      );
+                    }
+                    return null; // Return null for coupons that don't meet the condition
+                  })}
+                </select>
+              </div>
+
+              <section className="cart-totals">
+                <div>Cart Total: Rs.{cartTotal}</div>
+                {selectedCoupon && (
+                  <div>
+                    <p>Selected Coupon: {selectedCoupon.coupon_code}</p>
+                    <p>Discount Amount: Rs. {selectedCoupon.discountPrice} </p>
+                  </div>
+                )}
+                {selectedCoupon ? (
+                  <div className="cart-totals-net">
+                    Net Total: {cartTotal - selectedCoupon.discountPrice}
+                  </div>
+                ) : (
+                  <div className="cart-totals-net">Net Total: {cartTotal}</div>
+                )}
+              </section>
+              <section className="checkout-interaction-btns1">
+                <Link to="/payment" className="active-button-style">
+                  Proceed to payment
+                </Link>
+                <Link to="/menu" className="checkout-backtomenu-btn">
+                  Back to menu
+                </Link>
+              </section>
             </section>
-            <section className="checkout-interaction-btns1">
-              <Link to="/payment" className="active-button-style">
-                Proceed to payment
-              </Link>
-              <Link to="/menu" className="checkout-backtomenu-btn">
-                Back to menu
-              </Link>
-            </section>
-            </section>
-            
           </React.Fragment>
         )}
       </article>

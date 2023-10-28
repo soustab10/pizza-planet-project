@@ -37,7 +37,7 @@ const MenuGridItem = ({
   const [selectedSize, setSelectedSize] = useState(allSizesData[0].size_id); // Set the default selected crust
 
   const notifyAddtoCart = () => toast.success("Item has been added to cart successfully.");
-  const notifyLogin = () => toast.warn("Login with your credentials to add to cart.");
+  const notifyLogin = () => toast.warn("Login with credentials to add to cart.");
   const notifyError = () => toast.error("Something went wrong. Please try again.");
   const handleCrustChange = (event) => {
     const selectedCrustId = parseInt(event.target.value, 10);
@@ -90,11 +90,13 @@ const MenuGridItem = ({
         // return response.json();
       })
       .then((data) => {
+
         console.log(data);
+        notifyAddtoCart();
         if(data===undefined){
           return;
         }
-        notifyAddtoCart();
+        
         console.log(data);
       });
 

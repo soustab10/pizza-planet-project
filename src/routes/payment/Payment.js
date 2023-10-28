@@ -26,11 +26,12 @@ const Payment = ({ cartItems, totalPayment }) => {
     setFormError(validate(formValue));
     console.log(validate(formValue));
     const timeStamp = Date.now();
-    
+
     if (Object.keys(validate(formValue)).length > 0) {
       return;
     }
     const userToken = sessionStorage.getItem("token");
+    const couponCode = sessionStorage.getItem("coupon_code");
     console.log(userToken);
     const transacId = `${timeStamp}`;
     setTransactionId(transacId);
@@ -40,7 +41,12 @@ const Payment = ({ cartItems, totalPayment }) => {
     console.log(transacId);
     console.log(typeof transacId);
     var dataSend = JSON.stringify({
-      transaction_id: transacId,
+      transaction: {
+        transaction_id: transacId,
+      },
+      coupons: {
+        coupon_code: couponCode,
+      },
     });
 
     var requestOptions = {
@@ -67,7 +73,6 @@ const Payment = ({ cartItems, totalPayment }) => {
         console.log(data);
         setSubmit(true);
       });
-    
 
     ResetLocation();
   };
@@ -100,7 +105,6 @@ const Payment = ({ cartItems, totalPayment }) => {
               <p>
                 Transaction id: <span>{transactionId}</span>
               </p>
-             
             </section>
             <section className="success-payment-redirection">
               <Link

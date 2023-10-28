@@ -26,6 +26,8 @@ import NotFound from "./routes/not-found/NotFound.js";
 import Terms from "./routes/terms/Terms.js";
 import Profile from "./routes/profile/Profile.js";
 import ResetLocation from "./helpers/ResetLocation.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [allCategories, setAllCategories] = useState([]);
@@ -47,6 +49,11 @@ function App() {
   const [allCrustData, setAllCrustData] = useState([]);
   const [allToppingsData, setAllToppingsData] = useState([]);
   const [allSizesData, setAllSizesData] = useState([]);
+
+
+  const notifyLogout = () => toast.success("User Logged Out successfully");
+  const notifyLogin = () => toast.warn("Login with your credentials to add to cart.");
+  const notifyError = () => toast.error("Something went wrong. Please try again.");
 
   useEffect(() => {
     const fetchPizzaData = async () => {
@@ -135,31 +142,7 @@ function App() {
   };
 
   const updateUser = async (id, user) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_USERS_URL}/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-
-      if (response.status === 200) {
-        // Assuming getUser is a function that retrieves user data
-        // Make sure to handle this appropriately
-        const update = await getUser(id);
-        if (update) {
-          return true;
-        }
-        return true;
-      } else {
-        console.log("Update failed with status:", response.status);
-        return false;
-      }
-    } catch (err) {
-      console.log("Fetch error:", err.message);
-      return false;
-    }
+    console.log(user);
   };
 
   useEffect(() => {
@@ -187,6 +170,7 @@ function App() {
   };
 
   const handleLogout = () => {
+    notifyLogout();
     setValidLogin(false);
     hideMenu();
     setCurrentUser({});
@@ -630,6 +614,18 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/terms" element={<Terms />} />
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
 
       <Footer />
     </BrowserRouter>

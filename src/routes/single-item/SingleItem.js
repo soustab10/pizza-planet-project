@@ -236,9 +236,13 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
         else if (!response.ok) {
           notifyError();
         }
-        return response.json();
+        else if(response.ok){
+          notifyAddtoCart();
+        }
+        // return response.json();
       })
       .then((data) => {
+        // notifyAddtoCart();
         console.log(data);
       });
   };
