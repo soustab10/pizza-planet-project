@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import validateForm from "../../components/validateForm";
 import { v4 as uuidv4 } from "uuid";
 import ResetLocation from "../../helpers/ResetLocation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Register = ({ activateLoginModal }) => {
   const [formValue, setFormValue] = useState({
     id: "",
@@ -24,7 +27,12 @@ const Register = ({ activateLoginModal }) => {
   const [registrationFail, setRegistrationFail] = useState(false);
   const [loading, setLoading] = useState(false);
   const [verificationError, setVerificationError] = useState("");
-
+  const notifySuccess = () =>
+    toast.success(
+      "User has been registered successfully. Please Login wirh credentials to continue."
+    );
+  const notifyFill = () =>
+    toast.warn("Please fill all the fields. Note: All Fields are mandatory!");
   const getUsers = async () => {
     try {
       const response = await fetch(process.env.REACT_APP_USERS_URL);
@@ -76,9 +84,10 @@ const Register = ({ activateLoginModal }) => {
     console.log(bodySend);
     console.log(Object.keys(validate(formValue)));
     if (Object.keys(validate(formValue)).length > 0) {
+      notifyFill();
       setLoading(false);
       return;
-    } 
+    }
     // else {
     //   let currForm = { ...formValue };
     //   if (currForm.repeatPassword.length > 0) {
@@ -98,12 +107,13 @@ const Register = ({ activateLoginModal }) => {
         "Content-Type": "application/json",
       },
       body: bodySend,
-    })
-      .then((response) => {
-        window.alert("User Registered Successfully. Login with credentials to continue!");
-        window.location.href = "/";
-      })
-      ;
+    }).then((response) => {
+      notifySuccess();
+      window.alert(
+        "User has been registered successfully. Please Login wirh credentials to continue."
+      );
+      window.location.href = "/";
+    });
 
     // const accCreation = await createUser(currForm);
     // if (accCreation === false) {
@@ -341,6 +351,18 @@ const Register = ({ activateLoginModal }) => {
           </button>
         </form>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </main>
   );
 };

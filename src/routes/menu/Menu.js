@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import ResetLocation from "../../helpers/ResetLocation";
 import { motion } from "framer-motion";
 
+
 const Menu = ({
   allProducts,
   allProductsData,

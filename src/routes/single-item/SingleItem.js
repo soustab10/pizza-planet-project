@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Modal({ closeModal }) {
   return (
@@ -19,7 +21,7 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   const [singleProduct, setSingleProduct] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState([]);
   const [targetAttribute, setTargetAttribute] = useState("");
-  const [selectedSize, setSelectedSize] = useState(4);//change it to first starting size_id
+  const [selectedSize, setSelectedSize] = useState(4); //change it to first starting size_id
   const [selectedCrust, setSelectedCrust] = useState(6); // change it to first starting crust_id
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -31,6 +33,12 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   const [allSizesData, setAllSizesData] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const notifyAddtoCart = () =>
+    toast.success("Item has been added to cart successfully.");
+  const notifyLogin = () =>
+    toast.warn("Login with your credentials to add to cart.");
+  const notifyError = () =>
+    toast.error("Incorrect credentials. Please try again.");
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -147,7 +155,9 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
   const handleSizeChange = (event) => {
     const sizeId = event.target.value;
     setSelectedSize(event.target.value);
-    const selectedItemId = allSizesData.find((item) => item.size_id.toString() === sizeId);
+    const selectedItemId = allSizesData.find(
+      (item) => item.size_id.toString() === sizeId
+    );
     const newPrice = Math.round(totalPrice * selectedItemId.cost_multiplier);
 
     setTotalPrice(newPrice);
@@ -221,10 +231,10 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login to add to cart");
+          notifyLogin();
         }
-        if (!response.ok) {
-          throw new Error("Username and password do not match.");
+        else if (!response.ok) {
+          notifyError();
         }
         return response.json();
       })
@@ -355,6 +365,18 @@ const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
           </div>
         </section>
       </article>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </main>
   );
 };

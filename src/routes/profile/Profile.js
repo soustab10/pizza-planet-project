@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import ResetLocation from "../../helpers/ResetLocation";
 import { useNavigate } from "react-router-dom";
 import validateForm from "../../components/validateForm";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile = ({ currentUser, handleLogout, updateUser }) => {
   const [editForm, setEditForm] = useState(false);
@@ -29,6 +31,10 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
   const [viewOrder, setViewOrder] = useState(false);
   const [kitchenList, setKitchenList] = useState([]);
   const [orderList, setOrderList] = useState([]);
+  const notifySuccess = () => toast.success("Customer updated successfully");
+  const notifyLogin = () => toast.warn("Login with your credentials to add to cart.");
+  const notifyError = () => toast.error("Something went wrong. Please try again.");
+
   const navigate = useNavigate();
   const validate = validateForm("profile");
   const toggleForm = () => {
@@ -58,9 +64,10 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login with credentials!");
+          notifyLogin();
         }
         if (!response.ok) {
+          notifyError();
           throw new Error("Username and password do not match.");
         }
         return response.json();
@@ -112,9 +119,10 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login with credentials!");
+          notifyLogin();
         }
         if (!response.ok) {
+          notifyError();
           throw new Error("Username and password do not match.");
         }
         return response.json();
@@ -144,10 +152,10 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login with credentials!");
+          notifyLogin();
         }
         if (!response.ok) {
-          throw new Error("Username and password do not match.");
+          notifyError();
         }
         return response.json();
       })
@@ -199,15 +207,17 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
       (response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login with credentials!");
+          notifyLogin();
+          return;
         }
         if (!response.ok) {
+          notifyError();
           setLoading(false);
           return;
         }
         console.log(response);
         setLoading(false);
-        window.alert("Profile Updated!");
+        notifySuccess();
         window.location.reload();
       }
     );
@@ -603,6 +613,18 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
           </section>
         </section>
       ) : null}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </main>
   );
 };

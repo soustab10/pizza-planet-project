@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ResetLocation from "../../helpers/ResetLocation";
 
 const MenuGridItem = ({
@@ -35,6 +36,9 @@ const MenuGridItem = ({
   const [selectedCrust, setSelectedCrust] = useState(allCrustData[0].crust_id);
   const [selectedSize, setSelectedSize] = useState(allSizesData[0].size_id); // Set the default selected crust
 
+  const notifyAddtoCart = () => toast.success("Item has been added to cart successfully.");
+  const notifyLogin = () => toast.warn("Login with your credentials to add to cart.");
+  const notifyError = () => toast.error("Something went wrong. Please try again.");
   const handleCrustChange = (event) => {
     const selectedCrustId = parseInt(event.target.value, 10);
     const newSelectedCrust = allCrustData.find(
@@ -77,14 +81,20 @@ const MenuGridItem = ({
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login to add to cart");
+          notifyLogin();
+          return;
         }
         if (!response.ok) {
-          throw new Error("Username and password do not match.");
+          notifyError();
         }
-        return response.json();
+        // return response.json();
       })
       .then((data) => {
+        console.log(data);
+        if(data===undefined){
+          return;
+        }
+        notifyAddtoCart();
         console.log(data);
       });
 
@@ -159,6 +169,19 @@ const MenuGridItem = ({
           Add to Cart
         </button>
       </div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </article>
   );
 };

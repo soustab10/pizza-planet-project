@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import ResetLocation from "../../helpers/ResetLocation";
 import { useNavigate } from "react-router-dom";
 import validateForm from "../../components/validateForm";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
   const [editForm, setEditForm] = useState(false);
@@ -27,6 +29,13 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
   const [kitchenList, setKitchenList] = useState([]);
   const [orderList, setOrderList] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("");
+  const notifySucess = () => toast.success("Order Status has been updated successfully.");
+  const notifyLogin = () => toast.warn("Login with your credentials to add to cart.");
+  const notifyUpdate = () => toast.success("Profile updated successfully!");
+  const notifyOrders = () => toast.warn("No orders found!");
+
+
+
   const navigate = useNavigate();
   const validate = validateForm("partner_dashboard");
   const toggleForm = () => {
@@ -56,7 +65,8 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login with credentials!");
+          notifyLogin();
+          return;
         }
         if (!response.ok) {
           throw new Error("Username and password do not match.");
@@ -103,7 +113,8 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login with credentials!");
+          notifyLogin();
+          
         }
         if (!response.ok) {
           throw new Error("Username and password do not match.");
@@ -135,7 +146,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       .then((response) => {
         console.log(response.status);
         if (response.status === 500) {
-          window.alert("No Current Orders");
+          notifyOrders();
         }
         if (!response.ok) {
           throw new Error("Username and password do not match.");
@@ -189,7 +200,8 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       (response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login with credentials!");
+          notifyLogin();
+          return;
         }
         if (!response.ok) {
           setLoading(false);
@@ -197,7 +209,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
         }
         console.log(response);
         setLoading(false);
-        window.alert("Profile Updated!");
+        notifyUpdate();
         window.location.reload();
       }
     );
@@ -224,7 +236,8 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
     ).then((response) => {
       console.log(response.status);
       if (response.status === 403) {
-        window.alert("Please login with credentials!");
+        notifyLogin();
+        return;
       }
       if (!response.ok) {
         setLoading(false);
@@ -232,7 +245,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
       }
       console.log(response);
       setLoading(false);
-      window.alert("Status Updated!");
+      notifySucess();
       window.location.reload();
     });
   };
@@ -464,6 +477,18 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
           </section>
         </React.Fragment>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </main>
   );
 };

@@ -2,19 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ScrollBtn from "../../helpers/ScrollBtn";
 import EmptyCart from "./EmptyCart";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Cart = () => {
   const [cartData, setCartData] = useState([]);
 
-  const increaseQuantity = () => {
-    // setQuantity(quantity + 1);
-  };
-
-  const decreaseQuantity = () => {
-    // if (quantity > 1) {
-    //   setQuantity(quantity - 1);
-    // }
-  };
+  const notifyLogin = () => toast.warn("Login with your credentials to add to cart.");
+  const notifyError = () => toast.error("Something went wrong. Please try again.");
 
   useEffect(() => {
     document.title = "Shopping Cart | Pizza Planet";
@@ -34,10 +29,10 @@ const Cart = () => {
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login to add to cart");
+          notifyLogin();
         }
         if (!response.ok) {
-          throw new Error("Username and password do not match.");
+          notifyError();
         }
         return response.json();
       })
@@ -133,7 +128,7 @@ const Cart = () => {
       .then((response) => {
         console.log(response.status);
         if (response.status === 403) {
-          window.alert("Please login to add to cart");
+          notifyLogin();
         }
         if (!response.ok) {
           console.log("error",response);
@@ -243,6 +238,18 @@ const Cart = () => {
           </React.Fragment>
         )}
       </article>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <ScrollBtn />
     </main>
   );
