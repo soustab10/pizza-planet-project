@@ -12,7 +12,7 @@ const NotFound = () => {
                 aria-hidden="true"
             />
             <h2>This page is not available</h2>
-            <p>Sorry, we couldn’t find the page you’re looking for.
+            <p>Sorry, we couldnot find the page you are looking for.
             </p>
         </main>
     )

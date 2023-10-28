@@ -5,7 +5,6 @@ import Footer from "./components/footer/Footer";
 import {
   About,
   Cart,
-  Checkout,
   RootSection,
   Menu,
   Payment,
@@ -18,10 +17,7 @@ import {
 } from "./routes/index";
 
 import { AllCategories } from "./data/AllCategories";
-import CheckoutSummary from "./routes/checkout/CheckoutSummary.js";
-import CartTotals from "./routes/cart/CartTotals.js";
 import LoginModal from "./components/login/LoginModal.js";
-import CartItem from "./routes/cart/CartItem.js";
 import NotFound from "./routes/not-found/NotFound.js";
 import Terms from "./routes/terms/Terms.js";
 import Profile from "./routes/profile/Profile.js";
@@ -582,25 +578,7 @@ function App() {
             )
           }
         />
-        <Route
-          path="/checkout"
-          element={
-            <Checkout
-              checkoutSummary={
-                <CheckoutSummary
-                  cartItems={cartItems}
-                  handleAddProduct={handleAddProduct}
-                  handleRemoveProduct={handleRemoveProduct}
-                />
-              }
-              totalPayment={totalPayment}
-              cartItems={cartItems}
-              productsQuantity={productsQuantity}
-              taxes={taxes}
-              currentUser={currentUser}
-            />
-          }
-        />
+        
         <Route
           path="/payment"
           element={

@@ -10,7 +10,7 @@ import './routes/about/about.css'
 
 import './routes/cart/cart.css'
 import './routes/registration/register.css'
-import './routes/checkout/checkout.css'
+import './routes/cart/checkout.css'
 import './routes/payment/payments.css'
 import './routes/not-found/notFound.css'
 
