@@ -10,6 +10,7 @@ const Cart = () => {
 
   const notifyLogin = () => toast.warn("Login with your credentials to add to cart.");
   const notifyError = () => toast.error("Something went wrong. Please try again.");
+  const notifyCart = () => toast.success("Item deleted from cart.");
 
   useEffect(() => {
     document.title = "Shopping Cart | Pizza Planet";
@@ -138,6 +139,41 @@ const Cart = () => {
       .then((data) => {
         console.log(data);
         window.location.reload();
+        notifyCart();
+      });
+  };
+
+  const clearCart = () => {
+    const userToken = sessionStorage.getItem("token");
+    console.log(userToken);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
+    
+
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8080/cart/remove-all", requestOptions)
+      .then((response) => {
+        console.log(response.status);
+        if (response.status === 403) {
+          notifyLogin();
+        }
+        else if (!response.ok) {
+          console.log("error",response);
+          notifyError();
+        }
+        // return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        window.location.reload();
+        notifyCart();
       });
   };
   return (
@@ -217,8 +253,8 @@ const Cart = () => {
               );
             })}
             <section className="cart-footer">
-            <button className="cart-clear-btn">
-              remove all items from the cart
+            <button className="cart-clear-btn" onClick={clearCart}>
+              Clear Cart
             </button>
 
             <section className="cart-totals">

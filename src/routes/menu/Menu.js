@@ -80,6 +80,7 @@ const Menu = ({
           <ScrollButton />
         </article>
       )}
+      
 
       <ReactPaginate
         className="pagination"
