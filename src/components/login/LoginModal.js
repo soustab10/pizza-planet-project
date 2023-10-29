@@ -155,6 +155,9 @@ const LoginModal = ({
                   Log in
                 </button>
               </section>
+                <small className="forgot-password">
+                  Forgot Password? Conatct us at: <a href="mailto:contact@pizza.com">contact@pizza.com</a>
+                </small>
 
               <section className="login-and-signup">
                 Don't have an account?
@@ -169,18 +172,21 @@ const LoginModal = ({
                   Sign up
                 </LinkButton>
               </section>
+               
               <section className="login-and-signup">
                 Register as:
-                <LinkButton
+                {/* <LinkButton
                   onClick={() => {
                     hideLoginModal();
                     hideMenu();
                   }}
                   to="/registerkitchen"
                   className="modal-signup-btn2 "
+                
                 >
+    
                   Kitchen
-                </LinkButton>
+                </LinkButton> */}
                 <LinkButton
                   onClick={() => {
                     hideLoginModal();

@@ -400,7 +400,7 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
                   ) : (
                     <ul className="kitchen-list-item">
                       {orderList.map((item) => (
-                        <li key={item.order_id} className="kitchen-list-item-3">
+                        <li key={item.order_id} className={"kitchen-list-item-3 " + ((item.delivery_status === "DELIVERED") ?"delivered-background":"")}>
                           <p>Order Details:</p>
                           <p>Order ID: {item.order_id}</p>
                           <p>
@@ -410,9 +410,13 @@ const PartnerDashboard = ({ currentUser, handleLogout, updateUser }) => {
                             {item.kitchen.pincode}{" "}
                           </p>
                           <p>
-                            Your Delivery Partner Details:{" "}
-                            {item.partner.first_name} {item.partner.last_name}{" "}
-                            Phone:{item.partner.phone_number}
+                            Delivery Customer: {item.customer.first_name+" " +item.customer.last_name}
+                          </p>
+                          <p>
+                            Customer Address:{" "}
+                            {item.customer.street_name} {item.customer.plot}{" "}
+                            {item.customer.city} {item.customer.state}
+                            {item.customer.pincode}{" "}
                           </p>
                           <p>Order Total: {item.total_amount}</p>
                           <p>Status: {item.delivery_status}</p>
