@@ -328,7 +328,7 @@ const Cart = () => {
                       </div>
                     </section> */}
                     <section className="cart-item-interaction">
-                      <p className="cart-item-price">Rs. {cartItem.price}</p>
+                      <p className="cart-item-price">INR. {cartItem.price}</p>
                     </section>
                     <button
                       className="delete-button"
@@ -352,7 +352,7 @@ const Cart = () => {
                     if (coupon.activationPrice <= cartTotal) {
                       return (
                         <option key={coupon.coupon_id} value={coupon.coupon_id}>
-                          {coupon.coupon_code}: Discount Amount Rs.{" "}
+                          {coupon.coupon_code}: Discount Amount INR.{" "}
                           {coupon.discountPrice.toFixed(2)}
                         </option>
                       );
@@ -363,11 +363,11 @@ const Cart = () => {
               </div>
 
               <section className="cart-totals">
-                <div>Cart Total: Rs.{cartTotal}</div>
+                <div>Cart Total: INR.{cartTotal}</div>
                 {selectedCoupon && (
                   <div>
                     <p>Selected Coupon: {selectedCoupon.coupon_code}</p>
-                    <p>Discount Amount: Rs. {selectedCoupon.discountPrice} </p>
+                    <p>Discount Amount: INR. {selectedCoupon.discountPrice} </p>
                   </div>
                 )}
                 {selectedCoupon ? (

@@ -159,7 +159,7 @@ const MenuGridItem = ({
 
       <div className="price">
         <p className="price-num">
-          <span>Rs </span>
+          <span>INR </span>
           {singleProduct.price}
         </p>
 

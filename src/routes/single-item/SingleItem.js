@@ -348,10 +348,10 @@ const SingleItem = () => {
 
           <section className="price">
             <p className="price-num">
-              <span>Rs. </span>
+              <span>INR. </span>
               {totalPrice}
             </p>
-            <p className="price-num">Net Total: Rs {totalPrice * quantity}</p>
+            <p className="price-num">Net Total: INR {totalPrice * quantity}</p>
 
             <button
               onClick={addToCart}
