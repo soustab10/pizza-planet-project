@@ -17,8 +17,7 @@ const Menu = ({
   activeCategory,
   allCategories,
   changeCategory,
-  handleAddProduct,
-  handleRemoveProduct,
+ 
   findMenuItem,
 }) => {
   const [itemOffset, setItemOffset] = useState(0);
@@ -70,8 +69,7 @@ const Menu = ({
             <MenuGridItem
               key={singleProduct.id}
               singleProduct={singleProduct}
-              handleAddProduct={handleAddProduct}
-              handleRemoveProduct={handleRemoveProduct}
+              
               allCrustData={allCrustData}
               allSizesData={allSizesData}
               allToppingsData={allToppingsData}

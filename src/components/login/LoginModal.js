@@ -15,7 +15,6 @@ const LoginModal = ({
   loginModalWindow,
   hideMenu,
   validLogin,
-  getUser,
 }) => {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState({ username: "", password: "" });

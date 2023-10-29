@@ -33,15 +33,7 @@ const Register = ({ activateLoginModal }) => {
     );
   const notifyFill = () =>
     toast.warn("Please fill all the fields. Note: All Fields are mandatory!");
-  const getUsers = async () => {
-    try {
-      const response = await fetch(process.env.REACT_APP_USERS_URL);
-      const body = await response.json();
-      return body.data;
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -17,7 +17,7 @@ function Modal({ closeModal }) {
   );
 }
 
-const SingleItem = ({ handleAddProduct, handleRemoveProduct }) => {
+const SingleItem = () => {
   const [singleProduct, setSingleProduct] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState([]);
   const [targetAttribute, setTargetAttribute] = useState("");

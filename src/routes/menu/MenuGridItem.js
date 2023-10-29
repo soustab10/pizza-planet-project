@@ -6,8 +6,7 @@ import ResetLocation from "../../helpers/ResetLocation";
 
 const MenuGridItem = ({
   singleProduct,
-  handleAddProduct,
-  handleRemoveProduct,
+  
   allCrustData,
   allSizesData,
   allToppingsData,
