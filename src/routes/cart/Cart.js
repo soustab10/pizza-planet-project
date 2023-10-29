@@ -134,6 +134,92 @@ const Cart = () => {
         notifyCart();
       });
   };
+  const increaseCartItem = (cartItem) => {
+    console.log("delete from cart");
+    if(cartItem.quantity >= 10){
+      return;
+    }
+    const userToken = sessionStorage.getItem("token");
+    console.log(userToken);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
+    
+    const itemQuantity = cartItem.quantity + 1;
+    var dataSend = JSON.stringify({
+      cart_id: cartItem.cart_id,      
+      quantity: itemQuantity,      
+    });
+
+    console.log(dataSend);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: dataSend,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8080/cart/update", requestOptions)
+      .then((response) => {
+        console.log(response.status);
+        if (response.status === 403) {
+          notifyLogin();
+        }
+        if (!response.ok) {
+          console.log("error", response);
+        }
+        // return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        window.location.reload();
+        // notifyCart();
+      });
+  };
+  const decreaseCartItem = (cartItem) => {
+    console.log("delete from cart");
+    if(cartItem.quantity === 1){
+      return;
+    }
+    const userToken = sessionStorage.getItem("token");
+    console.log(userToken);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${userToken}`);
+    
+    const itemQuantity = cartItem.quantity - 1;
+    var dataSend = JSON.stringify({
+      cart_id: cartItem.cart_id,      
+      quantity: itemQuantity,      
+    });
+
+    console.log(dataSend);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: dataSend,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8080/cart/update", requestOptions)
+      .then((response) => {
+        console.log(response.status);
+        if (response.status === 403) {
+          notifyLogin();
+        }
+        if (!response.ok) {
+          console.log("error", response);
+        }
+        // return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        window.location.reload();
+        // notifyCart();
+      });
+  };
 
   const clearCart = () => {
     const userToken = sessionStorage.getItem("token");
@@ -205,6 +291,19 @@ const Cart = () => {
                           </li>
                         ))}
                       </ul>
+                    </section>
+                    <section className="cart-item-qty">
+                      
+                      <button className="cart-item-quantity" onClick={() => increaseCartItem(cartItem)}>
+                        +
+                      </button>
+                      Quantity: {cartItem.quantity}
+                      <button className="cart-item-quantity" onClick={() => decreaseCartItem(cartItem)}>
+                        -
+                      </button>
+                    </section>
+                    <section>
+                      
                     </section>
 
                     {/* <section>
