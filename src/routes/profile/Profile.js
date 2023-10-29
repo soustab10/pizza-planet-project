@@ -534,7 +534,7 @@ const Profile = ({ currentUser, handleLogout, updateUser }) => {
                   ) : (
                     <ul className="kitchen-list-item">
                       {orderList.map((item) => (
-                        <li key={item.order_id} className="kitchen-list-item-3">
+                        <li key={item.order_id} className={"kitchen-list-item-3 " + ((item.delivery_status === "DELIVERED") ?"delivered-background":"")} >
                           <p>Order Details:</p>
                           <p>Order ID: {item.order_id}</p>
                           <p>

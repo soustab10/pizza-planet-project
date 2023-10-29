@@ -6,7 +6,7 @@ import Website from "../../assets/images/socials/portfolio.png";
 const socials = [
   {
     id: 1,
-    href: "#",
+    href: "https://github.com/Sabretooth1405/dbms-project/",
     img: Github,
     name: Github
   },
@@ -18,7 +18,7 @@ const socials = [
   },
   {
     id: 3,
-    href: "#",
+    href: "https://github.com/Sabretooth1405/dbms-project-frontend/",
     img: Website,
     name: Website
   }
