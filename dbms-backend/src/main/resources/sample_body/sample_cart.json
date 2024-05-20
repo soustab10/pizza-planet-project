@@ -1,0 +1,20 @@
+{
+  "pizza": {
+    "pizza_id": 1
+  },
+  "quantity": 2,
+  "pizzaCrust": {
+    "crust_id": 1
+  },
+  "pizzaSize": {
+    "size_id": 2
+  },
+  "toppings": [
+    {
+      "topping_id": 4
+    },
+    {
+      "topping_id": 2
+    }
+  ]
+}

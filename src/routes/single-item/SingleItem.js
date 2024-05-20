@@ -351,6 +351,7 @@ const SingleItem = () => {
               <span>INR. </span>
               {totalPrice}
             </p>
+            <br/>
             <p className="price-num">Net Total: INR {totalPrice * quantity}</p>
 
             <button
@@ -361,12 +362,12 @@ const SingleItem = () => {
             </button>
           </section>
 
-          <div>
+          {/* <div>
             <p>Selected Size: {selectedSize}</p>
             <p>Selected Crust: {selectedCrust}</p>
             <p>Selected Toppings: {selectedToppings.join(", ") || "None"}</p>
             <p>Quantity: {quantity}</p>
-          </div>
+          </div> */}
         </section>
       </article>
       <ToastContainer

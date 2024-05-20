@@ -1,0 +1,29 @@
+{
+  "username":"John9",
+  "password":"test",
+  "first_name": "John3",
+  "last_name": "Doe3",
+  "email": [
+    {
+      "email": "john.doe@example.com"
+    }
+  ],
+  "phone_no": [
+    {
+      "phone_number": "123-456-7890"
+    },
+    {
+      "phone_number":"234-567-8910"
+    }
+  ],
+  "dob": "2000-02-03",
+  "age": 74,
+  "house_number": "7",
+  "street_name": "Race Course Road2",
+  "city": "Delhi",
+  "state": "Delhi",
+  "pincode": "100001"
+}
+
+
+

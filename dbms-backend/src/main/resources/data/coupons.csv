@@ -1,0 +1,5 @@
+coupon_id,coupon_code,ActivationPrice,DiscountPrice
+1,FLAT250,800.00,250.00
+2,BINGO,300.00,100.00
+3,PIZZA150,400.00,150
+4,FLAT120,400.00,120

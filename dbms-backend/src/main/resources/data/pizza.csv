@@ -1,0 +1,16 @@
+pizza_name,description,price_in_inr,pizza_image_url
+Margherita,"Classic tomato, mozzarella, and basil",599,https://source.unsplash.com/60nzTP7_hMQ
+Pepperoni,"Tomato sauce, mozzarella, and pepperoni",699,https://source.unsplash.com/MqT0asuoIcU
+Hawaiian,"Tomato sauce, mozzarella, ham, and pineapple",799,https://source.unsplash.com/MqT0asuoIcU
+Vegetarian,"Tomato sauce, mozzarella, bell peppers, onions, olives, and mushrooms",649,https://source.unsplash.com/60nzTP7_hMQ
+BBQ Chicken,"BBQ sauce, mozzarella, chicken, red onions, and cilantro",849,https://source.unsplash.com/_P76trHTWDE
+Margarita,"Tomato sauce, mozzarella, garlic, and basil",599,https://source.unsplash.com/_P76trHTWDE
+Supreme,"Tomato sauce, mozzarella, pepperoni, sausage, onions, bell peppers, olives, and mushrooms",899,https://source.unsplash.com/MqT0asuoIcU
+Four Cheese,"Tomato sauce, mozzarella, cheddar, feta, and parmesan",749,https://source.unsplash.com/MqT0asuoIcU
+Meat Lover's,"Tomato sauce, mozzarella, pepperoni, sausage, ham, and bacon",799,https://source.unsplash.com/60nzTP7_hMQ
+Veggie Delight,"Tomato sauce, mozzarella, bell peppers, onions, olives, mushrooms, and spinach",699,https://source.unsplash.com/MqT0asuoIcU
+Buffalo Chicken,"Buffalo sauce, mozzarella, chicken, red onions, and ranch drizzle",799,https://source.unsplash.com/MqT0asuoIcU
+BBQ Bacon,"BBQ sauce, mozzarella, bacon, red onions, and cheddar cheese",799,https://source.unsplash.com/_P76trHTWDE
+White Pizza,"Alfredo sauce, mozzarella, ricotta, garlic, and spinach",749,https://source.unsplash.com/MqT0asuoIcU
+Chicken Alfredo,"Alfredo sauce, mozzarella, chicken, spinach, and mushrooms",849,https://source.unsplash.com/MqT0asuoIcU
+Pesto Chicken,"Pesto sauce, mozzarella, chicken, sun-dried tomatoes, and arugula",899,https://source.unsplash.com/_P76trHTWDE

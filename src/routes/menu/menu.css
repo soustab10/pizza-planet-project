@@ -194,7 +194,7 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 .price {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   font-size: 1.4rem;
@@ -237,7 +237,7 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .price {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   font-size: 1.4rem;

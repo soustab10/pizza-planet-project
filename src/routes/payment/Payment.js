@@ -34,6 +34,7 @@ const Payment = ({ cartItems, totalPayment }) => {
     const couponCode = sessionStorage.getItem("coupon_code");
     console.log(userToken);
     const transacId = `${timeStamp}`;
+    console.log(uuidv4());
     setTransactionId(transacId);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");

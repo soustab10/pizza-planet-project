@@ -1,0 +1,16 @@
+"partner_id";"first_name";"last_name";"phone_number";"vehicle_number";"status";"city";"user_id"
+1;"Partner1";"LastName1";"1234567891";"Vehicle1";"Active";"Delhi";15
+2;"Partner2";"LastName2";"1234567892";"Vehicle2";"Active";"Delhi";16
+3;"Partner3";"LastName3";"1234567893";"Vehicle3";"Active";"Delhi";17
+4;"Partner4";"LastName4";"1234567894";"Vehicle4";"Active";"Delhi";18
+5;"Partner5";"LastName5";"1234567895";"Vehicle5";"Active";"Delhi";19
+6;"Partner6";"LastName6";"1234567896";"Vehicle6";"Active";"Noida";20
+7;"Partner7";"LastName7";"1234567897";"Vehicle7";"Active";"Noida";21
+8;"Partner8";"LastName8";"1234567898";"Vehicle8";"Active";"Noida";22
+9;"Partner9";"LastName9";"1234567899";"Vehicle9";"Active";"Noida";23
+10;"Partner10";"LastName10";"12345678910";"Vehicle10";"Active";"Noida";24
+11;"Partner11";"LastName11";"12345678911";"Vehicle11";"Active";"Varanasi";25
+12;"Partner12";"LastName12";"12345678912";"Vehicle12";"Active";"Varanasi";26
+13;"Partner13";"LastName13";"12345678913";"Vehicle13";"Active";"Varanasi";27
+14;"Partner14";"LastName14";"12345678914";"Vehicle14";"Active";"Varanasi";28
+15;"Partner15";"LastName15";"12345678915";"Vehicle15";"Active";"Varanasi";29
